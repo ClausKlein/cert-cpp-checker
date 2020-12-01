@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cereal>
+	<1>-2059305590</1>
+	<2>2490.6874193515378</2>
+	<3 size="dynamic">
+		<value0>true</value0>
+		<value1>false</value1>
+		<value2>true</value2>
+		<value3>false</value3>
+		<value4>true</value4>
+	</3>
+	<4>-415535837</4>
+	<5>1680347946</5>
+	<6>1950017254</6>
+	<7>
+		<first>-5326.22021484375</first>
+		<second>
+			<x>1751851598</x>
+			<z>847502624</z>
+			<y>1380541382</y>
+		</second>
+	</7>
+</cereal>
+
