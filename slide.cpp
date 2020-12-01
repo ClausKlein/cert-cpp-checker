@@ -17,7 +17,7 @@ void print(const auto& seq)
 {
     for (const auto& elem : seq) {
         std::cout << elem << ' ';
-	}
+    }
     std::cout << '\n';
 }
 
@@ -31,7 +31,7 @@ void test()
         auto s = slide(std::span{a}, offset, width);
         if (s.empty()) {
             break;
-		}
+        }
         print(s);
     }
 }
@@ -56,7 +56,7 @@ int main()
     // ranged for loop is supported
     for (const auto& s : a3) {
         std::cout << s << ' ';
-	}
+    }
 
     // deduction guide for array creation (since C++17)
     std::array a4{3.0, 1.0, 4.0}; // -> std::array<double, 3>

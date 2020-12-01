@@ -38,7 +38,7 @@ public:
 /// OOP51-CPP. Do not slice derived objects
 void bad(Employee e) { std::cout << e; }
 
-void good(const Employee &e) { std::cout << e; }
+void good(const Employee& e) { std::cout << e; }
 
 int main()
 {

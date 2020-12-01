@@ -4,7 +4,7 @@
 #include <memory>
 #include <new>
 #include <string>
- 
+
 /// FIO51-CPP. Close files when they are no longer needed
 void f(const std::string& fileName)
 {
@@ -44,7 +44,7 @@ void foo()
         i1 = new int;
         i2 = new int;
     } catch (std::bad_alloc&) {
-         // handle error ..
+        // handle error ..
         delete i1;
         delete i2;
         return;
@@ -60,7 +60,8 @@ void foo()
 }
 
 /// MEM54-CPP. Provide placement new with properly aligned pointers to sufficient storage capacity
-/// warning: Storage provided to placement new is only 2 bytes, whereas the allocated type requires 8 bytes [cplusplus.PlacementNew]
+/// warning: Storage provided to placement new is only 2 bytes, whereas the allocated type requires 8
+/// bytes [cplusplus.PlacementNew]
 void memory_leak()
 {
     short s{};
