@@ -1,0 +1,61 @@
+---
+# We'll use defaults from the Mozilla style,
+# but with 4 columns indentation.
+BasedOnStyle: Mozilla
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+IndentPPDirectives: AfterHash
+IndentCaseLabels: false
+IndentWidth: 4
+UseTab: Never
+---
+Language: Cpp
+AccessModifierOffset: -4
+### see BinPack... too
+#XXX not yet possible with clang-format V7.0.1! CK
+AllowAllArgumentsOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
+#
+AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+#
+AlignConsecutiveMacros: true
+###TBD: forced left!
+DerivePointerAlignment: false
+PointerAlignment: Left
+#NO! SpaceBeforeCpp11BracedList: true
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+#
+### BinPack... args will all be on the same line
+BinPackArguments: true
+BinPackParameters: true
+#
+# from LLVM style:
+###TBD We use only 103 columns!
+ColumnLimit: 103
+#XXX ColumnLimit: 79
+#
+AllowAllParametersOfDeclarationOnNextLine: true
+AlwaysBreakTemplateDeclarations: MultiLine
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+PenaltyReturnTypeOnItsOwnLine: 60
+SpaceAfterTemplateKeyword: true
+#
+IncludeBlocks:   Regroup
+IncludeCategories:
+  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
+    Priority:        2
+  - Regex:           '^<(Poco|gsl|asio|doctest|zmqpp|boost|gtest|gmock|fmt|json|spdlog|openssl)/'
+    Priority:        3
+  - Regex:           '<[_[:alnum:]./]+>'
+    Priority:        4
+# all other headers first!
+  - Regex:           '.*'
+    Priority:        1
+IncludeIsMainRegex: '(_test)?$'
+#
+---

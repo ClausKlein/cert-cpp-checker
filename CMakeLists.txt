@@ -2,14 +2,16 @@ cmake_minimum_required(VERSION 3.13...3.15)
 
 option(CMAKE_EXPORT_COMPILE_COMMANDS "create compile_commands.json" ON)
 
-project(cert LANGUAGES CXX VERSION 1.3.0)
+project(cert-test LANGUAGES CXX VERSION 1.3.0)
 
+#----------------------------------------------------------
+# Compiler config
+#----------------------------------------------------------
 if(NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
-
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 
 add_compile_options(-Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast)
 option(WITH_WERROR "Compile with '-Werror' C++ compiler flag" OFF)
@@ -17,8 +19,14 @@ if(WITH_WERROR)
     add_compile_options(-Werror)
 endif()
 
+find_program(CMAKE_CXX_CLANG_TIDY
+    NAMES clang-tidy clang-tidy-7 clang-tidy-8 clang-tidy-9 clang-tidy-10 clang-tidy-11 clang-tidy-12
+    HINTS /usr/local/bin /usr/bin
+)
 
+#----------------------------------------------------------
 enable_testing()
+#----------------------------------------------------------
 set(SPECIAL_TESTS "cereal-test.cpp")
 file(GLOB TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} cert-*.cpp)
 

@@ -34,44 +34,6 @@ void e()
     }
 }
 
-/// MEM51-CPP. Properly deallocate dynamically allocated resources
-void chaos()
-{
-    int* i1; // diagnostic required
-    int* i2;
-
-    try {
-        i1 = new int;
-        i2 = new int;
-    } catch (std::bad_alloc&) {
-        // handle error ..
-        delete i1;
-        delete i2;
-
-        return;
-    }
-
-    *i1 = 1;
-    *i2 = rand();
-
-    if ((*i1 + *i2) == 2) {
-        return; // diagnostic required
-    }
-
-    delete i1;
-    delete i2;
-}
-
-/// MEM54-CPP. Provide placement new with properly aligned pointers to sufficient storage capacity
-/// warning: Storage provided to placement new is only 2 bytes, whereas the allocated type requires 8
-/// bytes [cplusplus.PlacementNew]
-void memory_leak()
-{
-    short s{};
-    long* lp = ::new (&s) long; // diagnostic required
-    *lp = -1;
-}
-
 enum EnumType : int
 {
     First,
@@ -159,10 +121,8 @@ int main()
     good(test);
     bad(test);
 
-    chaos();
     bar(42);
 
-    memory_leak();
     e();
     f("/tmp/file.txt");
 }

@@ -1,7 +1,7 @@
 #
 # from https://wiki.sei.cmu.edu/confluence/display/cplusplus/Clang
 #
-CXXFLAGS:=-std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include
+CXXFLAGS:=-std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/
 
 #XXX CXXFLAGS+=-analyzer-checker=cplusplus    # EXP51-CPP. Do not delete an array through a pointer of the incorrect type
 
@@ -33,16 +33,20 @@ CC:=clang
 
 #XXX MAKEFLAGS+=-B
 
-.PHONY: init all check clean
-PROGRAMS:=init dynamic_pointer_cast slide slice cereal-test cert-MEM50 cert-MEM51 static-in-inline
+.PHONY: init all build check clean
+PROGRAMS:=dynamic_pointer_cast slide cert-MEM50 cert-MEM51 cert-MEM54
+# XXX slice cereal-test
+#
+# static-in-inline.c
+#
 
 #XXX check: all
+build:
 
 all: init $(PROGRAMS)
 	@echo ]
-	@echo scan-build --use-c++ $(CXX) make
 
-init: makefile
+init: build GNUmakefile
 	@echo [
 
 %: %.cpp
@@ -53,9 +57,15 @@ init: makefile
 	@echo \",
 	@echo \"file\": \"$(<)\"
 	@echo \},
+	clang-tidy $<
 
 check: compile_commands.json
-	run-clang-tidy
+	scan-build  --view --use-c++ $(CXX) make -j4 -B
+
+build: CMakeLists.txt
+	mkdir -p $@
+	cd $@ && cmake -G Ninja ..
+	cmake --build $@ -- -v all
 
 clean:
-	rm -rf *~ $(PROGRAMS)
+	rm -rf *~ $(PROGRAMS) build
