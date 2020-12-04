@@ -35,10 +35,10 @@ void e()
 }
 
 /// MEM51-CPP. Properly deallocate dynamically allocated resources
-void foo()
+void chaos()
 {
-    int* i1 = nullptr;
-    int* i2 = nullptr;
+    int* i1; // diagnostic required
+    int* i2;
 
     try {
         i1 = new int;
@@ -47,6 +47,7 @@ void foo()
         // handle error ..
         delete i1;
         delete i2;
+
         return;
     }
 
@@ -54,9 +55,11 @@ void foo()
     *i2 = rand();
 
     if ((*i1 + *i2) == 2) {
-        delete i1;
-        delete i2;
+        return; // diagnostic required
     }
+
+    delete i1;
+    delete i2;
 }
 
 /// MEM54-CPP. Provide placement new with properly aligned pointers to sufficient storage capacity
@@ -65,7 +68,7 @@ void foo()
 void memory_leak()
 {
     short s{};
-    long* lp = ::new (&s) long;
+    long* lp = ::new (&s) long; // diagnostic required
     *lp = -1;
 }
 
@@ -156,7 +159,7 @@ int main()
     good(test);
     bad(test);
 
-    foo();
+    chaos();
     bar(42);
 
     memory_leak();

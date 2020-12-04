@@ -36,7 +36,7 @@ public:
 };
 
 /// OOP51-CPP. Do not slice derived objects
-void bad(Employee e) { std::cout << e; }
+void bad(Employee e) { std::cout << e; } // diagnostic required
 
 void good(const Employee& e) { std::cout << e; }
 
