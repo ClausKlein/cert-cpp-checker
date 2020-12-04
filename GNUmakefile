@@ -27,9 +27,13 @@ CXXFLAGS:=-std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isyst
 
 CXX:=clang++
 
+# for cmake:
+export CXX
+
 CFLAGS:=-std=c11 -Wextra -Wpedantic
 # CFLAGS+=-Wstatic-in-inline    # MSC40-C. Do not violate constraints
 CC:=clang
+export CC
 
 #XXX MAKEFLAGS+=-B
 
@@ -46,7 +50,7 @@ build:
 all: init $(PROGRAMS)
 	@echo ]
 
-init: build GNUmakefile
+init: GNUmakefile
 	@echo [
 
 %: %.cpp
@@ -60,12 +64,12 @@ init: build GNUmakefile
 	clang-tidy $<
 
 check: compile_commands.json
-	scan-build  --view --use-c++ $(CXX) make -j4 -B
+	scan-build  --view --use-c++ $(CXX) $(MAKE) -j4 -B all
 
 build: CMakeLists.txt
-	mkdir -p $@
-	cd $@ && cmake -G Ninja ..
+	cmake -B $@ -S $(CURDIR) -G Ninja
 	cmake --build $@ -- -v all
+	cmake --build $@ -- -v test
 
 clean:
 	rm -rf *~ $(PROGRAMS) build

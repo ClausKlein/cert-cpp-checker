@@ -1,32 +1,27 @@
 [
 {
 "directory": "/Users/clausklein/cert-test",
-"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include -Wdangling-initializer-list     -Wdelete-incomplete     -Wdelete-non-virtual-dtor     -Wdynamic-class-memaccess     -Wexceptions     -Winvalid-noreturn     -Winvalid-offsetof     -Wmismatched-new-delete     -Wreorder     -Wreserved-id-macro     -Wreturn-type     -Wunevaluated-expression     -Wuninitialized     -Wunsequenced     -Wuser-defined-literals     -Wvarargs     -Wvexing-parse        dynamic_pointer_cast.cpp -o dynamic_pointer_cast ",
+"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/    dynamic_pointer_cast.cpp -o dynamic_pointer_cast ",
 "file": "dynamic_pointer_cast.cpp"
 },
 {
 "directory": "/Users/clausklein/cert-test",
-"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include -Wdangling-initializer-list     -Wdelete-incomplete     -Wdelete-non-virtual-dtor     -Wdynamic-class-memaccess     -Wexceptions     -Winvalid-noreturn     -Winvalid-offsetof     -Wmismatched-new-delete     -Wreorder     -Wreserved-id-macro     -Wreturn-type     -Wunevaluated-expression     -Wuninitialized     -Wunsequenced     -Wuser-defined-literals     -Wvarargs     -Wvexing-parse        slide.cpp -o slide ",
+"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/    slide.cpp -o slide ",
 "file": "slide.cpp"
 },
 {
 "directory": "/Users/clausklein/cert-test",
-"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include -Wdangling-initializer-list     -Wdelete-incomplete     -Wdelete-non-virtual-dtor     -Wdynamic-class-memaccess     -Wexceptions     -Winvalid-noreturn     -Winvalid-offsetof     -Wmismatched-new-delete     -Wreorder     -Wreserved-id-macro     -Wreturn-type     -Wunevaluated-expression     -Wuninitialized     -Wunsequenced     -Wuser-defined-literals     -Wvarargs     -Wvexing-parse        slice.cpp -o slice ",
-"file": "slice.cpp"
-},
-{
-"directory": "/Users/clausklein/cert-test",
-"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include -Wdangling-initializer-list     -Wdelete-incomplete     -Wdelete-non-virtual-dtor     -Wdynamic-class-memaccess     -Wexceptions     -Winvalid-noreturn     -Winvalid-offsetof     -Wmismatched-new-delete     -Wreorder     -Wreserved-id-macro     -Wreturn-type     -Wunevaluated-expression     -Wuninitialized     -Wunsequenced     -Wuser-defined-literals     -Wvarargs     -Wvexing-parse        cereal-test.cpp -o cereal-test ",
-"file": "cereal-test.cpp"
-},
-{
-"directory": "/Users/clausklein/cert-test",
-"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include -Wdangling-initializer-list     -Wdelete-incomplete     -Wdelete-non-virtual-dtor     -Wdynamic-class-memaccess     -Wexceptions     -Winvalid-noreturn     -Winvalid-offsetof     -Wmismatched-new-delete     -Wreorder     -Wreserved-id-macro     -Wreturn-type     -Wunevaluated-expression     -Wuninitialized     -Wunsequenced     -Wuser-defined-literals     -Wvarargs     -Wvexing-parse        cert-MEM50.cpp -o cert-MEM50 ",
+"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/    cert-MEM50.cpp -o cert-MEM50 ",
 "file": "cert-MEM50.cpp"
 },
 {
 "directory": "/Users/clausklein/cert-test",
-"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/ -isystem /usr/local/include -Wdangling-initializer-list     -Wdelete-incomplete     -Wdelete-non-virtual-dtor     -Wdynamic-class-memaccess     -Wexceptions     -Winvalid-noreturn     -Winvalid-offsetof     -Wmismatched-new-delete     -Wreorder     -Wreserved-id-macro     -Wreturn-type     -Wunevaluated-expression     -Wuninitialized     -Wunsequenced     -Wuser-defined-literals     -Wvarargs     -Wvexing-parse        cert-MEM51.cpp -o cert-MEM51 ",
+"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/    cert-MEM51.cpp -o cert-MEM51 ",
 "file": "cert-MEM51.cpp"
+},
+{
+"directory": "/Users/clausklein/cert-test",
+"command": "clang++ -std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/    cert-MEM54.cpp -o cert-MEM54 ",
+"file": "cert-MEM54.cpp"
 }
 ]
