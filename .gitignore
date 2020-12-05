@@ -1,3 +1,4 @@
+/html/
 /build/
 *.html
 *.o
@@ -6,6 +7,7 @@ cert-MEM51
 cert-MEM52
 cert-MEM53
 cert-MEM54
+cert-MEM55
 compile_commands.json
 dynamic_pointer_cast
 slide
