@@ -29,8 +29,8 @@ void bar()
 
 int bad()
 {
-    int *i1;
-    int *i2; // diagnostic required
+    int* i1;
+    int* i2; // diagnostic required
     try {
         i1 = new int;
         i2 = new int;
@@ -88,8 +88,8 @@ int main()
 /* https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM51-CPP.+Properly+deallocate+dynamically+allocated+resources
  *
 $ clang++ -std=c++17 -Wextra cert-MEM51.cpp
-cert-MEM51.cpp:26:5: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you mean 'delete[]'?  [-Wmismatched-new-delete]
-  delete array;
+cert-MEM51.cpp:26:5: warning: 'delete' applied to a pointer that was allocated with 'new[]'; did you
+mean 'delete[]'?  [-Wmismatched-new-delete] delete array;
   ^
         []
 cert-MEM51.cpp:21:18: note: allocated with 'new[]' here
@@ -97,7 +97,7 @@ cert-MEM51.cpp:21:18: note: allocated with 'new[]' here
                ^
 1 warning generated.
 
-cert-MEM51.cpp:16:5: warning: Argument to 'delete' is the address of the local variable 'space', which is not memory allocated by 'new' [clang-analyzer-cplusplus.NewDelete]
+cert-MEM51.cpp:16:5: warning: Argument to 'delete' is the address of the local variable 'space', which
+is not memory allocated by 'new' [clang-analyzer-cplusplus.NewDelete]
 
  */
-

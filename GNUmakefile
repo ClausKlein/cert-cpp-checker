@@ -1,8 +1,22 @@
+MAKEFLAGS+= --warn-undefined-variables  # Warn when an undefined variable is referenced.
+
+TARGET_ARCH:=
+CPPFLAGS:=-isystem /usr/local/include  #XXX -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/
+
+CC:=clang
+CFLAGS:=-std=c11 -Wextra -Wpedantic
+
+CXX:=clang++
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
+
+LDLIBS:=
+LDFLAGS:=
+LOADLIBES:=
+
+
 #
 # from https://wiki.sei.cmu.edu/confluence/display/cplusplus/Clang
 #
-CXXFLAGS:=-std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/
-
 #XXX CXXFLAGS+=-analyzer-checker=cplusplus    # EXP51-CPP. Do not delete an array through a pointer of the incorrect type
 
 # CXXFLAGS+=-Wdangling-gsl    # MEM50-CPP. Do not access freed memory
@@ -25,51 +39,63 @@ CXXFLAGS:=-std=c++20 -Wall -Wextra -Wpedantic -isystem /usr/local/include -isyst
 # CXXFLAGS+=-Wvarargs    # EXP58-CPP. Pass an object of the correct type to va_start
 # CXXFLAGS+=-Wvexing-parse    # DCL53-CPP. Do not write syntactically ambiguous declarations
 
-CXX:=clang++
+
+# CFLAGS+=-Wstatic-in-inline    # MSC40-C. Do not violate constraints
+
 
 # for cmake:
 export CXX
-
-CFLAGS:=-std=c11 -Wextra -Wpedantic
-# CFLAGS+=-Wstatic-in-inline    # MSC40-C. Do not violate constraints
-CC:=clang
 export CC
 
-#XXX MAKEFLAGS+=-B
 
-.PHONY: init all build check clean
-PROGRAMS:=dynamic_pointer_cast slide cert-MEM50 cert-MEM51 cert-MEM54
-# XXX slice cereal-test
-#
-# static-in-inline.c
-#
+.PHONY: init all build check test clean
 
-#XXX check: all
+#XXX TESTS:=$(shell ls cert-*.cpp)
+TESTS:=$(wildcard cert-*.cpp)
+PROGRAMS:=$(TESTS:%.cpp=%)
+
+######################################
+#
+# c++17 cereal-test.cpp dynamic_pointer_cast.cpp slide.cpp
+# c++20 slice.cpp
+#
+# PREPARED: static-in-inline.c
+#
+######################################
 build:
 
-all: init $(PROGRAMS)
+all: init $(PROGRAMS) #XXX test #NO! check
 	@echo ]
 
-init: GNUmakefile
+init: GNUmakefile compile_commands.json
 	@echo [
 
-%: %.cpp
-	@echo \{
-	@echo \"directory\": \"$(CURDIR)\",
-	@echo -n \"command\": \"
-	$(LINK.cc) $< -o $@
-	@echo \",
-	@echo \"file\": \"$(<)\"
-	@echo \},
-	clang-tidy $<
+# %: %.cpp
+# 	@echo \{
+# 	@echo \"directory\": \"$(CURDIR)\",
+# 	@echo -n \"command\": \"
+# 	$(LINK.cc) $< -o $@
+# 	@echo \",
+# 	@echo \"file\": \"$(<)\"
+# 	@echo \},
+# 	clang-tidy $<
 
-check: compile_commands.json
+check: init
 	scan-build  --view --use-c++ $(CXX) $(MAKE) -j4 -B all
 
-build: CMakeLists.txt
-	cmake -B $@ -S $(CURDIR) -G Ninja
+compile_commands.json: build/compile_commands.json
+	ln -fs $< $@
+
+build/compile_commands.json: CMakeLists.txt
+	cmake -B $(@D) -S $(CURDIR) -G Ninja
+
+build: compile_commands.json
 	cmake --build $@ -- -v all
-	cmake --build $@ -- -v test
+
+test: build 
+	cmake --build $< -- -v test
 
 clean:
-	rm -rf *~ $(PROGRAMS) build
+	rm -rf .*~ *~ $(PROGRAMS) build compile_commands.json
+
+GNUmakefile :: ;

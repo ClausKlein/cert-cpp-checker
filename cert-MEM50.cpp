@@ -5,17 +5,13 @@
 #include <string>
 
 std::string str_func() { return std::string("test text"); }
-void display_string(const char* s)
-{
-    std::cout << s << std::endl;
-}
+void display_string(const char* s) { std::cout << s << std::endl; }
 
 void undefined()
 {
     const char* str = str_func().c_str(); // diagnostic required
-    display_string(str); /* Undefined behavior */
+    display_string(str);                  /* Undefined behavior */
 }
-
 
 struct S
 {
@@ -32,7 +28,6 @@ void foo() noexcept(false)
     auto i = s->f(); // diagnostic required
     std::cout << i << std::endl;
 }
-
 
 void bar()
 {
@@ -51,16 +46,14 @@ void tests()
     undefined();
 }
 
-
 void bad() noexcept(false)
 {
     char* ptr = static_cast<char*>(::operator new(0));
     *ptr = 0;
     // ...
     ::operator delete(ptr); /* Undefined behavior */
-    display_string(ptr); /* Undefined behavior */
+    display_string(ptr);    /* Undefined behavior */
 }
-
 
 int main(int argc, const char* argv[])
 {
@@ -89,18 +82,24 @@ int main(int argc, const char* argv[])
 /*
  * https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM50-CPP.+Do+not+access+freed+memory
  *
- * cert-MEM50.cpp:15:23: warning: object backing the pointer will be destroyed at the end of the full-expression [-Wdangling-gsl]
-    const char* str = str_func().c_str();
+ * cert-MEM50.cpp:15:23: warning: object backing the pointer will be destroyed at the end of the
+full-expression [-Wdangling-gsl] const char* str = str_func().c_str();
                       ^~~~~~~~~~
 1 warning generated.
 
 builddriver executing: 'run-clang-tidy cert-MEM50.cpp'
 Compilation SUCCEED in 3.240367 seconds
 Number of warnings: 6
-WarningErrorEntry(path='cert-MEM50.cpp', lineno='16', severity='warning', message='Inner pointer of container used after re/deallocation [clang-analyzer-cplusplus.InnerPointer]', column='5')
-WarningErrorEntry(path='cert-MEM50.cpp', lineno='32', severity='warning', message='Use of memory after it is freed [clang-analyzer-cplusplus.NewDelete]', column='14')
-WarningErrorEntry(path='cert-MEM50.cpp', lineno='43', severity='warning', message='Use of memory after it is freed [clang-analyzer-cplusplus.NewDelete]', column='14')
-WarningErrorEntry(path='cert-MEM50.cpp', lineno='57', severity='warning', message='do not declare variables of type va_list; use variadic templates instead [cppcoreguidelines-pro-type-vararg]', column='5')
-WarningErrorEntry(path='cert-MEM50.cpp', lineno='58', severity='warning', message='Use of zero-allocated memory [clang-analyzer-cplusplus.NewDelete]', column='10')
-WarningErrorEntry(path='cert-MEM50.cpp', lineno='80', severity='warning', message='do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]', column='42')
+WarningErrorEntry(path='cert-MEM50.cpp', lineno='16', severity='warning', message='Inner pointer of
+container used after re/deallocation [clang-analyzer-cplusplus.InnerPointer]', column='5')
+WarningErrorEntry(path='cert-MEM50.cpp', lineno='32', severity='warning', message='Use of memory after
+it is freed [clang-analyzer-cplusplus.NewDelete]', column='14')
+WarningErrorEntry(path='cert-MEM50.cpp', lineno='43', severity='warning', message='Use of memory after
+it is freed [clang-analyzer-cplusplus.NewDelete]', column='14')
+WarningErrorEntry(path='cert-MEM50.cpp', lineno='57', severity='warning', message='do not declare
+variables of type va_list; use variadic templates instead [cppcoreguidelines-pro-type-vararg]',
+column='5') WarningErrorEntry(path='cert-MEM50.cpp', lineno='58', severity='warning', message='Use of
+zero-allocated memory [clang-analyzer-cplusplus.NewDelete]', column='10')
+WarningErrorEntry(path='cert-MEM50.cpp', lineno='80', severity='warning', message='do not use pointer
+arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]', column='42')
  */
