@@ -7,9 +7,11 @@ CC:=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic
 
 CXX:=clang++
-CXXFLAGS:=-std=c++20 -Wextra -Wpedantic
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
 
+LDLIBS:=
 LDFLAGS:=
+LOADLIBES:=
 
 
 #
@@ -62,34 +64,38 @@ PROGRAMS:=$(TESTS:%.cpp=%)
 ######################################
 build:
 
-all: init $(PROGRAMS)
+all: init $(PROGRAMS) #XXX test #NO! check
 	@echo ]
 
 init: GNUmakefile compile_commands.json
 	@echo [
 
-%: %.cpp
-	@echo \{
-	@echo \"directory\": \"$(CURDIR)\",
-	@echo -n \"command\": \"
-	$(LINK.cc) $< -o $@
-	@echo \",
-	@echo \"file\": \"$(<)\"
-	@echo \},
-	clang-tidy $<
+# %: %.cpp
+# 	@echo \{
+# 	@echo \"directory\": \"$(CURDIR)\",
+# 	@echo -n \"command\": \"
+# 	$(LINK.cc) $< -o $@
+# 	@echo \",
+# 	@echo \"file\": \"$(<)\"
+# 	@echo \},
+# 	clang-tidy $<
 
 check: init
 	scan-build  --view --use-c++ $(CXX) $(MAKE) -j4 -B all
 
-compile_commands.json: build
-	ln -fs build/$@ .
+compile_commands.json: build/compile_commands.json
+	ln -fs $< $@
 
-build: CMakeLists.txt
-	cmake -B $@ -S $(CURDIR) -G Ninja
+build/compile_commands.json: CMakeLists.txt
+	cmake -B $(@D) -S $(CURDIR) -G Ninja
+
+build: compile_commands.json
 	cmake --build $@ -- -v all
 
-test: build
+test: build 
 	cmake --build $< -- -v test
 
 clean:
-	rm -rf *~ $(PROGRAMS) build compile_commands.json
+	rm -rf .*~ *~ $(PROGRAMS) build compile_commands.json
+
+GNUmakefile :: ;
