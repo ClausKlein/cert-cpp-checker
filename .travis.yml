@@ -13,22 +13,34 @@ language: cpp
 #     sources:
 #       - ubuntu-toolchain-r-test
 
+addons:
+  apt:
+    packages:
+      - ninja
+      - llvm
+  homebrew:
+    packages:
+      - ninja
+      - llvm
+      - gmake
+
 
 matrix:
   include:
-    # Test gcc-7.5: C++14, Build=Debug
-    - env: GCC_VERSION=7 BUILD_TYPE=Debug CPP=14
-      os: linux
-      dist: bionic
+    # # Test gcc-7.5: C++14, Build=Debug  MAKE=make GEN=Ninja
+    # - env: GCC_VERSION=7 BUILD_TYPE=Debug CPP=14
+    #   os: linux
+    #   dist: bionic
 
-    # Test clang-7.0: C++14, Build=Debug
-    - env: CLANG_VERSION=7 BUILD_TYPE=Debug CPP=14
-      os: linux
-      dist: bionic
+    # # Test clang-7.0: C++14, Build=Debug MAKE=make GEN=Ninja
+    # - env: CLANG_VERSION=7 BUILD_TYPE=Debug CPP=14
+    #   os: linux
+    #   dist: bionic
 
-    # Test clang-9.1: C++14, Build=Debug
-    - env: BUILD_TYPE=Debug CPP=14
+    # Test clang-12.2: C++14, Build=Debug
+    - env: BUILD_TYPE=Debug CPP=14 MAKE=gmake GEN=Ninja
       os: osx
+      osx_image: xcode12.2
 
 
 before_script:
@@ -39,21 +51,23 @@ before_script:
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
-  - pwd
-  - mkdir -p build && pushd build
-  - |
-    cmake .. \
-      --warn-uninitialized \
-      -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+
+  # - pwd
+  # - mkdir -p build && pushd build
+  # - |
+  #   cmake .. -G ${GEN}\
+  #     --warn-uninitialized \
+  #     -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+
+  # - pwd
+  # - cmake --build . -- all
+  # #NO! - ctest -j2 --output-on-failure
+  # - popd
 
   - pwd
-  - cmake --build . -- all
-  #NO! - ctest -j2 --output-on-failure
-
-  - popd
-  - pwd
-  - make all
-  #XXX - make check
+  - ${MAKE} build
+  - ${MAKE} all
+  - ${MAKE} check
 
 
 notifications:

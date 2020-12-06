@@ -96,7 +96,7 @@ compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
 
 $(BUILDDIR)/compile_commands.json: CMakeLists.txt
-	cmake -B $(@D) -S $(CURDIR) #XXX -G Ninja
+	cmake -B $(@D) -S $(CURDIR) -G Ninja
 
 build: compile_commands.json
 	cmake --build $(BUILDDIR) -- -v all
