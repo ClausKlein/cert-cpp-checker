@@ -19,10 +19,13 @@ if(WITH_WERROR)
     add_compile_options(-Werror)
 endif()
 
-find_program(CMAKE_CXX_CLANG_TIDY
+find_program(CLANG_TIDY
     NAMES clang-tidy clang-tidy-7 clang-tidy-8 clang-tidy-9 clang-tidy-10 clang-tidy-11 clang-tidy-12
     HINTS /usr/local/bin /usr/bin
 )
+if(CLANG_TIDY)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})
+endif()
 
 #----------------------------------------------------------
 enable_testing()
