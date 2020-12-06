@@ -48,19 +48,21 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXX="clang++" CC="clang"; fi
   - cmake --version
   - make --version
+  - pwd
 
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
   - mkdir -p build
-  - cmake -B build -S ${PWD} --warn-uninitialized \
+  - cmake -B build -S . --warn-uninitialized \
       -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
       -DCMAKE_CXX_STANDARD=${CPP} \
 
   - cmake --build build -- all
   #XXX - cd build && ctest -j2 --output-on-failure
+
   - make all
-  - make check
+  - make check -n
 
 
 notifications:
