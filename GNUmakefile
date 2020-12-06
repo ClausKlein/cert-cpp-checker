@@ -7,7 +7,7 @@ CC:=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic
 
 CXX:=clang++
-CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
+CXXFLAGS:=-std=c++14 -Wextra -Wpedantic
 
 LDLIBS:=
 LDFLAGS:=
@@ -89,7 +89,7 @@ init: GNUmakefile compile_commands.json
 # 	clang-tidy $<
 
 check: init
-	$(SCAN_BUILD) --keep-going --view --use-c++ $(CXX) -o $(HTMLDIR) $(MAKE) -j4 -B all
+	$(SCAN_BUILD) --keep-going --use-c++ $(CXX) -o $(HTMLDIR) $(MAKE) -j4 -B all
 
 compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
