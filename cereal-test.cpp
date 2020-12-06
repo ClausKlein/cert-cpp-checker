@@ -1,10 +1,10 @@
 #include "math.h"
-
 #include <cereal/archives/xml.hpp>
 #include <cereal/cereal.hpp>
 #include <cereal/types/map.hpp>
 #include <cereal/types/utility.hpp>
 #include <cereal/types/vector.hpp>
+
 #include <fstream>
 #include <random>
 

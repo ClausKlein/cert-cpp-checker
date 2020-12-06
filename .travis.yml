@@ -1,0 +1,76 @@
+#
+# Adapted from various sources, including:
+# https://github.com/gabime/spdlog
+#
+sudo: required
+language: cpp
+
+
+# gcc 8.0
+addons: &gcc8
+  apt:
+    packages:
+      - g++-8
+    sources:
+      - ubuntu-toolchain-r-test
+
+
+# Clang 7.0
+addons: &clang70
+  apt:
+    packages:
+      - clang-7
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-7
+
+
+matrix:
+  include:
+    # Test gcc-8: C++17, Build=Debug
+    - env: GCC_VERSION=8 BUILD_TYPE=Debug CPP=17
+      os: linux
+      addons: *gcc8
+
+    # Test clang-7.0: C++17, Build=Debug, ASAN=On
+    - env: CLANG_VERSION=7 BUILD_TYPE=Debug CPP=17 ASAN=On TSAN=Off
+      dist: bionic
+
+    # osx
+    - env: BUILD_TYPE=Debug CPP=17 ASAN=On TSAN=Off
+      os: osx
+
+
+before_script:
+  - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
+  - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXX="clang++" CC="clang"; fi
+  - which clang-tidy
+  - which scan-build
+  - which make
+  - which ninja
+  - which $CXX
+  - $CXX --version
+  - cmake --version
+  - make --version
+
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - make all
+  - make check
+  - mkdir -p build && cd build
+  - |
+    cmake .. \
+      --warn-uninitialized \
+      -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+      -DCMAKE_CXX_STANDARD=$CPP \
+
+    #XXX -DSPDLOG_SANITIZE_ADDRESS=$ASAN
+
+  - make VERBOSE=1 -j2
+  - ctest -j2 --output-on-failure
+
+
+notifications:
+  email: false
