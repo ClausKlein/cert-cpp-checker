@@ -101,7 +101,7 @@ static void perfect()
     for (auto& i : buffer) {
         i.~S();
     } // NOTE: not realy needed! CK
-    std::cout << "buffer contains stil " << buffer.size() << " elements!" << std::endl;
+    std::cout << "buffer contains still " << buffer.size() << " elements!" << std::endl;
 }
 
 int main()

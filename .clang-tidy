@@ -4,9 +4,9 @@ boost-*,\
 cert-*,\
 clang-analyzer-*,\
 cppcoreguidelines-*,\
--cppcoreguidelines-macro-usage,\
--cppcoreguidelines-owning-memory,\
--hicpp-*,\
+cppcoreguidelines-macro-usage,\
+cppcoreguidelines-owning-memory,\
+hicpp-*,\
 misc-*,\
 -misc-non-private-member-variables-in-classes,\
 -modernize-*,\
