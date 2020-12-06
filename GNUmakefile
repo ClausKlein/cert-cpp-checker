@@ -14,6 +14,15 @@ LDFLAGS:=
 LOADLIBES:=
 
 
+HTMLDIR?=$(CURDIR)/html
+BUILDDIR?=$(CURDIR)/build
+
+
+CLANG_VERSION:=$(shell clang --version | grep -w version | sed -e 's/clang version //')
+CLANG_VERS:=$(CLANG_VERSION:%.*=%)
+SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERS) || which scan-build)
+
+
 #
 # from https://wiki.sei.cmu.edu/confluence/display/cplusplus/Clang
 #
@@ -48,9 +57,8 @@ export CXX
 export CC
 
 
-.PHONY: init all build check test clean
+.PHONY: init all build check test clean distclean
 
-#XXX TESTS:=$(shell ls cert-*.cpp)
 TESTS:=$(wildcard cert-*.cpp)
 PROGRAMS:=$(TESTS:%.cpp=%)
 
@@ -81,21 +89,25 @@ init: GNUmakefile compile_commands.json
 # 	clang-tidy $<
 
 check: init
-	scan-build  --view --use-c++ $(CXX) $(MAKE) -j4 -B all
+	$(SCAN_BUILD) --keep-going --view --use-c++ $(CXX) -o $(HTMLDIR) $(MAKE) -j4 -B all
 
-compile_commands.json: build/compile_commands.json
+compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
 
-build/compile_commands.json: CMakeLists.txt
+$(BUILDDIR)/compile_commands.json: CMakeLists.txt
 	cmake -B $(@D) -S $(CURDIR) -G Ninja
 
 build: compile_commands.json
-	cmake --build $@ -- -v all
+	cmake --build $(BUILDDIR) -- -v all
 
-test: build 
-	cmake --build $< -- -v test
+test: build
+	cmake --build $(BUILDDIR) -- -v $@
 
 clean:
-	rm -rf .*~ *~ $(PROGRAMS) build compile_commands.json
+	-cmake --build $(BUILDDIR) -- -v $@
+	rm -rf .*~ *~ $(PROGRAMS)
+
+distclean: clean
+	rm -rf $(BUILDDIR) $(HTMLDIR) compile_commands.json
 
 GNUmakefile :: ;
