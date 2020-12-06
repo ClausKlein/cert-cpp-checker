@@ -31,35 +31,33 @@ matrix:
     #   os: linux
     #   addons: *gcc8
 
-    # Test clang-7.0: C++17, Build=Debug
+    # Test clang-7.0: C++14, Build=Debug
     - env: CLANG_VERSION=7 BUILD_TYPE=Debug CPP=14
       os: linux
       dist: bionic
 
-    # osx
+    # Test clang-9.1: C++14, Build=Debug
     - env: BUILD_TYPE=Debug CPP=14
       os: osx
 
 
 before_script:
-  - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
-  - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
+  #XXX - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
+  #XXX - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
+  #XXX - $CXX --version
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXX="clang++" CC="clang"; fi
-  - $CXX --version
   - cmake --version
   - make --version
 
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
-  - mkdir -p build && cd build
-  - |
-    cmake .. \
-      --warn-uninitialized \
-      -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-      -DCMAKE_CXX_STANDARD=$CPP \
+  - mkdir -p build
+  - cmake -B build -S ${PWD} --warn-uninitialized \
+      -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+      -DCMAKE_CXX_STANDARD=${CPP} \
 
-  - cmake -build build -- all
+  - cmake --build build -- all
   #XXX - cd build && ctest -j2 --output-on-failure
   - make all
   - make check
