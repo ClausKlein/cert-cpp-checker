@@ -5,31 +5,21 @@
 language: cpp
 
 
-# # gcc 8.0
+# # TODO: gcc 8.0
 # addons: &gcc8
 #   apt:
 #     packages:
 #       - g++-8
 #     sources:
 #       - ubuntu-toolchain-r-test
-#
-#
-# # Clang 7.0
-# addons: &clang70
-#   apt:
-#     packages:
-#       - clang-7
-#     sources:
-#       - ubuntu-toolchain-r-test
-#       - llvm-toolchain-trusty-7
 
 
 matrix:
   include:
-    # # Test gcc-8: C++17, Build=Debug
-    # - env: GCC_VERSION=8 BUILD_TYPE=Debug CPP=17
-    #   os: linux
-    #   addons: *gcc8
+    # Test gcc-7.5: C++14, Build=Debug
+    - env: GCC_VERSION=7 BUILD_TYPE=Debug CPP=14
+      os: linux
+      dist: bionic
 
     # Test clang-7.0: C++14, Build=Debug
     - env: CLANG_VERSION=7 BUILD_TYPE=Debug CPP=14
@@ -42,10 +32,6 @@ matrix:
 
 
 before_script:
-  #XXX - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
-  #XXX - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
-  #XXX - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXX="clang++" CC="clang"; fi
-  #XXX - $CXX --version
   - cmake --version
   - make --version
   - pwd
@@ -53,14 +39,18 @@ before_script:
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
-  - mkdir -p build && cd build && \
-      cmake .. --warn-uninitialized \
-      -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-      -DCMAKE_CXX_STANDARD=${CPP} \
+  - pwd
+  - mkdir -p build && cd build
+  - |
+    cmake .. \
+      --warn-uninitialized \
+      -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 
+  - pwd
   - cmake --build build -- all
-  #XXX - cd build && ctest -j2 --output-on-failure
+  #NO! - cd build && ctest -j2 --output-on-failure
 
+  - pwd
   - make all
   #XXX - make check
 

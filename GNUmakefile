@@ -1,12 +1,12 @@
 MAKEFLAGS+= --warn-undefined-variables  # Warn when an undefined variable is referenced.
 
 TARGET_ARCH:=
-CPPFLAGS:=-isystem /usr/local/include  #XXX -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/
+CPPFLAGS?=-isystem /usr/local/include  #XXX -isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/
 
-CC:=clang
+CC?=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic
 
-CXX:=clang++
+CXX?=clang++
 CXXFLAGS:=-std=c++14 -Wextra -Wpedantic
 
 LDLIBS:=
