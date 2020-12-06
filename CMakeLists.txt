@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.13...3.15)
+cmake_minimum_required(VERSION 3.8...3.15)
 
 option(CMAKE_EXPORT_COMPILE_COMMANDS "create compile_commands.json" ON)
 
-project(cert-test LANGUAGES CXX VERSION 1.3.0)
+project(cert-test LANGUAGES CXX VERSION 0.1.3)
 
 #----------------------------------------------------------
 # Compiler config
@@ -44,7 +44,7 @@ foreach(TEST_SOURCE ${TESTS})
     set(TEST_TARGET "test_${TEST_TARGET}")
 
     add_executable(${TEST_TARGET} ${TEST_SOURCE})
-    target_compile_features(${TEST_TARGET} INTERFACE cxx_std_17)
+    target_compile_features(${TEST_TARGET} INTERFACE cxx_std_14)
     # target_link_libraries(${TEST_TARGET} ${LIBS})
     add_test(NAME "${TEST_TARGET}" COMMAND "${TEST_TARGET}")
 
