@@ -5,6 +5,9 @@
 language: cpp
 
 
+compiler: clang
+
+
 # # TODO: gcc 8.0
 # addons: &gcc8
 #   apt:
@@ -22,7 +25,7 @@ addons:
     packages:
       - ninja
       - llvm
-      - gmake
+      - make
 
 
 matrix:
@@ -38,14 +41,16 @@ matrix:
     #   dist: bionic
 
     # Test clang-12.2: C++14, Build=Debug
-    - env: BUILD_TYPE=Debug CPP=14 MAKE=gmake GEN=Ninja
+    - env: BUILD_TYPE=Debug CPP=14 MAKE=gmake GEN=Ninja #XXX CXX=clang++-12.2
       os: osx
       osx_image: xcode12.2
 
 
 before_script:
+  - ${CXX} --version
+  - ${MAKE} --version
   - cmake --version
-  - make --version
+  - ninja --version
   - pwd
 
 
