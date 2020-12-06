@@ -2,10 +2,9 @@
 Checks: "-*,\
 boost-*,\
 cert-*,\
-clang-analyzer-*,\
+-clang-analyzer-*,\
 cppcoreguidelines-*,\
-cppcoreguidelines-macro-usage,\
-cppcoreguidelines-owning-memory,\
+-cppcoreguidelines-owning-memory,\
 hicpp-*,\
 misc-*,\
 -misc-non-private-member-variables-in-classes,\
@@ -14,6 +13,7 @@ misc-*,\
 performance-*,\
 portability-*,\
 readability-*,\
+-*macro-usage,\
 -*magic-numbers,\
 -*avoid-c-arrays,\
 "
