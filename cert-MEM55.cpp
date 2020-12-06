@@ -13,7 +13,7 @@ void operator delete(void* ptr, std::size_t) noexcept; // Defined elsewhere
 
 int main()
 {
-    int* p = new int;   // diagnostic required
+    int* p = new int; // diagnostic required
     // ...
     delete p;
     // warning: Potential leak of memory pointed to by 'p' [clang-analyzer-unix.Malloc]
