@@ -18,9 +18,9 @@ HTMLDIR?=$(CURDIR)/html
 BUILDDIR?=$(CURDIR)/build
 
 
-CLANG_VERSION:=$(shell clang --version | grep -w version | sed -e 's/^.*clang version //')
-CLANG_VERS:=$(CLANG_VERSION:%.*=%)
-SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERS) || which scan-build)
+# CLANG_VERSION:=$(shell clang --version | grep -w version | sed -e 's/^.*clang version //')
+# CLANG_VERS:=$(CLANG_VERSION:%.*=%)
+# SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERS) || which scan-build)
 SCAN_BUILD?=scan-build
 
 
@@ -96,7 +96,7 @@ compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
 
 $(BUILDDIR)/compile_commands.json: CMakeLists.txt
-	cmake -B $(@D) -S $(CURDIR) -G Ninja
+	cmake -B $(@D) -S $(CURDIR) #XXX -G Ninja
 
 build: compile_commands.json
 	cmake --build $(BUILDDIR) -- -v all
