@@ -18,10 +18,14 @@ HTMLDIR?=$(CURDIR)/html
 BUILDDIR?=$(CURDIR)/build
 
 
-# CLANG_VERSION:=$(shell clang --version | grep -w version | sed -e 's/^.*clang version //')
-# CLANG_VERS:=$(CLANG_VERSION:%.*=%)
-# SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERS) || which scan-build)
-SCAN_BUILD?=scan-build
+UNAME:=$(shell uname)
+ifeq ($(UNAME),Darwin)
+  SCAN_BUILD?=/usr/local/opt/llvm/bin/scan-build
+else
+  CLANG_VERSION:=$(shell clang --version | grep -w version | sed -e 's/^.*clang version //')
+  CLANG_VERS:=$(CLANG_VERSION:%.*=%)
+  SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERS) || which scan-build)
+endif
 
 
 #
