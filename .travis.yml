@@ -42,6 +42,7 @@ matrix:
 
     # Test clang-12.2: C++14, Build=Debug
     - env: BUILD_TYPE=Debug CPP=14 MAKE=gmake GEN=Ninja #XXX CXX=clang++-12.2
+      - PATH=/usr/local/opt/llvm/bin/:${PATH}
       os: osx
       osx_image: xcode12.2
 
