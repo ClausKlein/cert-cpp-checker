@@ -22,9 +22,8 @@ UNAME:=$(shell uname)
 ifeq ($(UNAME),Darwin)
   SCAN_BUILD?=/usr/local/opt/llvm/bin/scan-build
 else
-  CLANG_VERSION:=$(shell clang --version | grep -w version | sed -e 's/^.*clang version //')
-  CLANG_VERS:=$(CLANG_VERSION:%.*=%)
-  SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERS) || which scan-build)
+  CLANG_VERSION:=$(shell clang --version | grep -w version | perl -n -e 'print if s/^.*clang version (\d+)\..*/$$1/')
+  SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERSION) || which scan-build)
 endif
 
 
@@ -33,25 +32,26 @@ endif
 #
 #XXX CXXFLAGS+=-analyzer-checker=cplusplus    # EXP51-CPP. Do not delete an array through a pointer of the incorrect type
 
-CXXFLAGS+=-Wdangling-gsl    # MEM50-CPP. Do not access freed memory
-CXXFLAGS+=-Wdangling-initializer-list    # EXP54-CPP. Do not access an object outside of its lifetime
-CXXFLAGS+=-Wdelete-incomplete    # EXP57-CPP. Do not cast or delete pointers to incomplete classes
-CXXFLAGS+=-Wdelete-non-virtual-dtor    # OOP52-CPP. Do not delete a polymorphic object without a virtual destructor
-CXXFLAGS+=-Wdynamic-class-memaccess    # EXP60-CPP. Do not pass a nonstandard-layout type object across execution boundaries
-CXXFLAGS+=-Wexceptions    # ERR53-CPP. Do not reference base classes or class data members in a constructor or destructor function-try-block handler
-# CXXFLAGS+=-Wexceptions    # ERR54-CPP. Catch handlers should order their parameter types from most derived to least derived
-CXXFLAGS+=-Winvalid-noreturn    # MSC53-CPP. Do not return from a function declared [[noreturn]]
-CXXFLAGS+=-Winvalid-offsetof    # EXP59-CPP. Use offsetof() on valid types and members
-CXXFLAGS+=-Wmismatched-new-delete    # MEM51-CPP. Properly deallocate dynamically allocated resources
-CXXFLAGS+=-Wreorder    # OOP53-CPP. Write constructor member initializers in the canonical order
-CXXFLAGS+=-Wreserved-id-macro    # DCL51-CPP. Do not declare or define a reserved identifier
-CXXFLAGS+=-Wreturn-type    # MSC52-CPP. Value-returning functions must return a value from all exit paths
-CXXFLAGS+=-Wunevaluated-expression    # EXP52-CPP. Do not rely on side effects in unevaluated operands
-CXXFLAGS+=-Wuninitialized    # EXP53-CPP. Do not read uninitialized memory
-CXXFLAGS+=-Wunsequenced    # EXP50-CPP. Do not depend on the order of evaluation for side effects
-CXXFLAGS+=-Wuser-defined-literals    # DCL51-CPP. Do not declare or define a reserved identifier
-CXXFLAGS+=-Wvarargs    # EXP58-CPP. Pass an object of the correct type to va_start
-CXXFLAGS+=-Wvexing-parse    # DCL53-CPP. Do not write syntactically ambiguous declarations
+#XXX Not needed and problems with old clang-analyzer on debian! CK
+## CXXFLAGS+=-Wdangling-gsl    # MEM50-CPP. Do not access freed memory
+## CXXFLAGS+=-Wdangling-initializer-list    # EXP54-CPP. Do not access an object outside of its lifetime
+## CXXFLAGS+=-Wdelete-incomplete    # EXP57-CPP. Do not cast or delete pointers to incomplete classes
+## CXXFLAGS+=-Wdelete-non-virtual-dtor    # OOP52-CPP. Do not delete a polymorphic object without a virtual destructor
+## CXXFLAGS+=-Wdynamic-class-memaccess    # EXP60-CPP. Do not pass a nonstandard-layout type object across execution boundaries
+## CXXFLAGS+=-Wexceptions    # ERR53-CPP. Do not reference base classes or class data members in a constructor or destructor function-try-block handler
+## # CXXFLAGS+=-Wexceptions    # ERR54-CPP. Catch handlers should order their parameter types from most derived to least derived
+## CXXFLAGS+=-Winvalid-noreturn    # MSC53-CPP. Do not return from a function declared [[noreturn]]
+## CXXFLAGS+=-Winvalid-offsetof    # EXP59-CPP. Use offsetof() on valid types and members
+## CXXFLAGS+=-Wmismatched-new-delete    # MEM51-CPP. Properly deallocate dynamically allocated resources
+## CXXFLAGS+=-Wreorder    # OOP53-CPP. Write constructor member initializers in the canonical order
+## CXXFLAGS+=-Wreserved-id-macro    # DCL51-CPP. Do not declare or define a reserved identifier
+## CXXFLAGS+=-Wreturn-type    # MSC52-CPP. Value-returning functions must return a value from all exit paths
+## CXXFLAGS+=-Wunevaluated-expression    # EXP52-CPP. Do not rely on side effects in unevaluated operands
+## CXXFLAGS+=-Wuninitialized    # EXP53-CPP. Do not read uninitialized memory
+## CXXFLAGS+=-Wunsequenced    # EXP50-CPP. Do not depend on the order of evaluation for side effects
+## CXXFLAGS+=-Wuser-defined-literals    # DCL51-CPP. Do not declare or define a reserved identifier
+## CXXFLAGS+=-Wvarargs    # EXP58-CPP. Pass an object of the correct type to va_start
+## CXXFLAGS+=-Wvexing-parse    # DCL53-CPP. Do not write syntactically ambiguous declarations
 
 
 # CFLAGS+=-Wstatic-in-inline    # MSC40-C. Do not violate constraints
