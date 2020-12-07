@@ -6,7 +6,7 @@
 #include <cstring>
 #include <new>
 
-#define USE_COMPIENT_SOLUTION
+#undef USE_COMPIENT_SOLUTION
 
 namespace {
 
@@ -19,7 +19,7 @@ struct alignas(32) Vector
 #ifdef USE_COMPIENT_SOLUTION
     static void* operator new(size_t nbytes)
     {
-        if (void* p = aligned_alloc(alignof(Vector), nbytes)) {
+        if (void* p = std::aligned_alloc(alignof(Vector), nbytes)) {
             return p;
         }
         throw std::bad_alloc();
