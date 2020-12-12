@@ -57,11 +57,12 @@ target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
 add_executable(slice slice.cpp)
 target_compile_features(slice PRIVATE cxx_std_17)
 
-add_executable(slide slide.cpp)
 find_package(SPAN CONFIG)
 if(SPAN_FOUND)
+    add_executable(slide slide.cpp)
     target_link_libraries(slide tcb::span)
 else()
+    #XXX add_executable(slide slide.cpp)
     #XXX target_compile_features(slide PRIVATE cxx_std_20)
 endif()
 
