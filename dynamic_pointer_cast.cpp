@@ -1,3 +1,4 @@
+#include <algorithm>    // replace and replace_if
 #include <exception>
 #include <fstream>
 #include <iostream>
@@ -56,11 +57,13 @@ void bar(int intVar)
 
 void good(const std::string& input)
 {
+#if __cpp_lib_erase_if
     std::string email{input};
 
     std::replace(email.begin(), email.end(), ';', ' ');
 
     std::cout << email << std::endl;
+#endif
 }
 
 void bad(const std::string& input)
