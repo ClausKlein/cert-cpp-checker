@@ -27,7 +27,6 @@ struct alignas(32) Vector
     static void operator delete(void* p) { free(p); }
     // warning: do not manage memory manually; use RAII [cppcoreguidelines-no-malloc,hicpp-no-malloc]
 #endif
-
 };
 
 Vector* createVector()

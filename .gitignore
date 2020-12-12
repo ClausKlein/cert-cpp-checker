@@ -10,6 +10,11 @@ cert-MEM54
 cert-MEM55
 cert-MEM56
 cert-MEM57
+cereal-test
 compile_commands.json
 dynamic_pointer_cast
+safeComparison
+slice
 slide
+timeConversion
+to_string

@@ -2,18 +2,25 @@
 #include <array>
 #include <iostream>
 #include <iterator>
-#include <span>
 #include <string>
+
+#if __cpp_lib_span
+#    include <span>
+using std::span;
+#else
+#    include <tcb/span.hpp>
+using tcb::span;
+#endif
 
 // The example uses std::span to implement some algorithms on contiguous ranges.
 
 template <class T, std::size_t N>
-[[nodiscard]] constexpr auto slide(std::span<T, N> s, std::size_t offset, std::size_t width)
+[[nodiscard]] constexpr auto slide(span<T, N> s, std::size_t offset, std::size_t width)
 {
     return s.subspan(offset, offset + width <= s.size() ? width : 0U);
 }
 
-void print(const auto& seq)
+template <class T> void print(const T& seq)
 {
     for (const auto& elem : seq) {
         std::cout << elem << ' ';
@@ -28,7 +35,7 @@ void test()
 
     for (std::size_t offset{};; ++offset) {
         constexpr std::size_t width{6};
-        auto s = slide(std::span{a}, offset, width);
+        auto s = slide(span{a}, offset, width);
         if (s.empty()) {
             break;
         }

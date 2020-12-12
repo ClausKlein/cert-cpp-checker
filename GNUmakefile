@@ -3,14 +3,16 @@ MAKEFLAGS+= --warn-undefined-variables  # Warn when an undefined variable is ref
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
 
+#XXX CC:=gcc-10
 CC?=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic
 
+#XXX CXX:=g++-10
 CXX?=clang++
-CXXFLAGS:=-std=c++14 -Wextra -Wpedantic
+CXXFLAGS:=-std=c++2a -Wextra -Wpedantic
 
-LDLIBS:=
-LDFLAGS:=
+LDLIBS:=-lfmt
+LDFLAGS:=-L/usr/local/lib
 LOADLIBES:=
 
 
@@ -66,6 +68,7 @@ export CC
 .PHONY: init all build check test format clean distclean
 
 TESTS:=$(wildcard cert-*.cpp)
+TESTS+=cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
 PROGRAMS:=$(TESTS:%.cpp=%)
 
 ######################################
@@ -110,7 +113,7 @@ test: build
 	cmake --build $(BUILDDIR) -- -v $@
 
 format:
-	clang-format -i *.cpp *.c
+	clang-format -i *.cpp *.c *.h #XXX *.hpp
 
 clean:
 	-cmake --build $(BUILDDIR) -- -v $@
