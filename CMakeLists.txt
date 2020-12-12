@@ -40,7 +40,6 @@ foreach(TEST_SOURCE ${TESTS})
 
     add_executable(${TEST_TARGET} ${TEST_SOURCE})
     target_compile_features(${TEST_TARGET} PRIVATE cxx_std_17)
-    # target_link_libraries(${TEST_TARGET} ${LIBS})
     add_test(NAME "${TEST_TARGET}" COMMAND "${TEST_TARGET}")
 
 endforeach()
@@ -53,7 +52,7 @@ if(CEREAL_FOUND)
 endif()
 
 add_executable(dynamic_pointer_cast dynamic_pointer_cast.cpp)
-target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_20)
+target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
 
 add_executable(slice slice.cpp)
 target_compile_features(slice PRIVATE cxx_std_17)
@@ -63,20 +62,19 @@ find_package(SPAN CONFIG)
 if(SPAN_FOUND)
     target_link_libraries(slide tcb::span)
 else()
-    target_compile_features(slide PRIVATE cxx_std_20)
+    #XXX target_compile_features(slide PRIVATE cxx_std_20)
 endif()
 
 add_executable(safeComparison safeComparison.cpp)
-target_compile_features(safeComparison PRIVATE cxx_std_20)
+#XXX target_compile_features(safeComparison PRIVATE cxx_std_20)
 
 add_executable(timeConversion timeConversion.cpp)
-target_compile_features(timeConversion PRIVATE cxx_std_20)
+#XXX target_compile_features(timeConversion PRIVATE cxx_std_20)
 
 find_package(Boost CONFIG)
 find_package(FMT CONFIG)
 if(FMT_FOUND AND Boost_fOUND)
     add_executable(to_string to_string.cpp)
     target_link_libraries(to_string fmt::fmt Boost::headers)
-    # target_compile_features(to_string PRIVATE cxx_std_20)
 endif()
 
