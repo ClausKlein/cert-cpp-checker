@@ -9,7 +9,7 @@ CFLAGS:=-std=c11 -Wextra -Wpedantic
 
 #XXX CXX:=g++-10
 CXX?=clang++
-CXXFLAGS:=-std=c++2a -Wextra -Wpedantic
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
 
 LDLIBS:=-lfmt
 LDFLAGS:=-L/usr/local/lib
@@ -68,7 +68,7 @@ export CC
 .PHONY: init all build check test format clean distclean
 
 TESTS:=$(wildcard cert-*.cpp)
-TESTS+=cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
+#XXX TESTS+=cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
 PROGRAMS:=$(TESTS:%.cpp=%)
 
 ######################################
