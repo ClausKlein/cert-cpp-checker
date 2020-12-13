@@ -1,7 +1,7 @@
 MAKEFLAGS+= --warn-undefined-variables
 COLOR?:YES
 VERBOSE?:NO
-MAKESILENT?:
+MAKESILENT?:YES
 
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
@@ -14,7 +14,7 @@ CFLAGS:=-std=c11 -Wextra -Wpedantic
 CXX?=clang++
 CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
 
-LDLIBS:=-lfmt $(CURDIR)/library.a
+LDLIBS:=$(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib
 LOADLIBES:=
 
@@ -75,7 +75,7 @@ export CC
 
 TESTS:=$(wildcard cert-*.cpp)
 #XXX TESTS+=cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
-PROGRAMS:=$(TESTS:%.cpp=%)
+#XXX PROGRAMS:=$(TESTS:%.cpp=%)
 
 ######################################
 #
