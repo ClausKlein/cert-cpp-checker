@@ -1,4 +1,7 @@
-MAKEFLAGS+= --warn-undefined-variables  # Warn when an undefined variable is referenced.
+MAKEFLAGS+= --warn-undefined-variables
+COLOR?:YES
+VERBOSE?:NO
+MAKESILENT?:
 
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
@@ -61,6 +64,9 @@ endif
 
 
 # for cmake:
+export MAKESILENT
+export VERBOSE
+export COLOR
 export CXX
 export CC
 
@@ -115,19 +121,19 @@ compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
 
 $(BUILDDIR)/compile_commands.json: CMakeLists.txt
-	cmake -B $(@D) -S $(CURDIR) -G Ninja
+	cmake -B $(@D) -S $(CURDIR) #XXX -G Ninja
 
 build: compile_commands.json
-	cmake --build $(BUILDDIR) -- -v all
+	cmake --build $(BUILDDIR) -- all
 
 test: build
-	cmake --build $(BUILDDIR) -- -v $@
+	cmake --build $(BUILDDIR) -- $@
 
 format:
 	clang-format -i *.cpp *.c *.h #XXX *.hpp
 
 clean:
-	-cmake --build $(BUILDDIR) -- -v $@
+	-cmake --build $(BUILDDIR) -- $@
 	rm -rf .*~ *~ *.a *.o $(PROGRAMS)
 
 distclean: clean
