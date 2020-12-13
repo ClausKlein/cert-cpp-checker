@@ -4,6 +4,8 @@
 #include <new>
 #include <string>
 
+namespace {
+
 std::string str_func() { return std::string("test text"); }
 void display_string(const char* s) { std::cout << s << std::endl; }
 
@@ -54,6 +56,8 @@ void bad() noexcept(false)
     ::operator delete(ptr); /* Undefined behavior */
     display_string(ptr);    /* Undefined behavior */
 }
+
+} // namespace
 
 int main(int argc, const char* argv[])
 {

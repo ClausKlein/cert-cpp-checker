@@ -1,4 +1,4 @@
-#include <algorithm>    // replace and replace_if
+#include <algorithm> // replace and replace_if
 #include <exception>
 #include <fstream>
 #include <iostream>

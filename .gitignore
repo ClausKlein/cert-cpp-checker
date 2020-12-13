@@ -2,6 +2,13 @@
 /build/
 *.html
 *.o
+cereal-test
+cert-DCL50
+cert-ERR54
+cert-ERR59
+cert-ERR60
+cert-EXP53
+cert-EXP60
 cert-MEM50
 cert-MEM51
 cert-MEM52
@@ -10,7 +17,6 @@ cert-MEM54
 cert-MEM55
 cert-MEM56
 cert-MEM57
-cereal-test
 compile_commands.json
 dynamic_pointer_cast
 safeComparison

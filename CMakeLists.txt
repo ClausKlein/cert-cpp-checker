@@ -40,6 +40,7 @@ foreach(TEST_SOURCE ${TESTS})
 
     add_executable(${TEST_TARGET} ${TEST_SOURCE})
     target_compile_features(${TEST_TARGET} PRIVATE cxx_std_17)
+    target_link_libraries(${TEST_TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/library.a)
     add_test(NAME "${TEST_TARGET}" COMMAND "${TEST_TARGET}")
 
 endforeach()

@@ -11,7 +11,7 @@ CFLAGS:=-std=c11 -Wextra -Wpedantic
 CXX?=clang++
 CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
 
-LDLIBS:=-lfmt
+LDLIBS:=-lfmt $(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib
 LOADLIBES:=
 
@@ -79,12 +79,23 @@ PROGRAMS:=$(TESTS:%.cpp=%)
 # PREPARED: static-in-inline.c
 #
 ######################################
-build:
+build: library.a
+
+# An execution boundary is the delimitation between code compiled by differing compilers
+library.a: library.o
+	ar -rv $@ $<
+
+
+library.o: CXX:=g++ CXXFLAGS:=-std=c++98
+library.o: library.h
+library.o: library.cpp
+	g++ -std=c++98 -c $< -o $@
+
 
 all: init $(PROGRAMS) #XXX test #NO! check
 	@echo ]
 
-init: GNUmakefile compile_commands.json
+init: library.a GNUmakefile compile_commands.json
 	@echo [
 
 # %: %.cpp
@@ -117,7 +128,7 @@ format:
 
 clean:
 	-cmake --build $(BUILDDIR) -- -v $@
-	rm -rf .*~ *~ $(PROGRAMS)
+	rm -rf .*~ *~ *.a *.o $(PROGRAMS)
 
 distclean: clean
 	rm -rf $(BUILDDIR) $(HTMLDIR) compile_commands.json
