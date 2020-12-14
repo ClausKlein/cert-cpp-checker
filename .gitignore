@@ -3,6 +3,15 @@
 *.html
 *.o
 cereal-test
+cert-CTR50
+cert-CTR51
+cert-CTR52
+cert-CTR53
+cert-CTR54
+cert-CTR55
+cert-CTR56
+cert-CTR57
+cert-CTR58
 cert-DCL50
 cert-ERR54
 cert-ERR59
