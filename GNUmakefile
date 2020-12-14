@@ -1,7 +1,7 @@
 MAKEFLAGS+= --warn-undefined-variables
-COLOR?:YES
-VERBOSE?:NO
-MAKESILENT?:YES
+COLOR?=
+VERBOSE?=
+MAKESILENT?=
 
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
@@ -75,7 +75,7 @@ export CC
 
 TESTS:=$(wildcard cert-*.cpp)
 #XXX TESTS+=cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
-#XXX PROGRAMS:=$(TESTS:%.cpp=%)
+PROGRAMS:=$(TESTS:%.cpp=%)
 
 ######################################
 #
