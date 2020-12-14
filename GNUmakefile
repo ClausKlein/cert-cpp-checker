@@ -98,7 +98,7 @@ library.o: library.cpp
 	g++ -std=c++98 -c $< -o $@
 
 
-all: init $(PROGRAMS) #XXX test #NO! check
+all: library.a $(PROGRAMS) #XXX init test #NO! check
 	@echo ]
 
 init: library.a GNUmakefile compile_commands.json

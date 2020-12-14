@@ -38,7 +38,7 @@ jobs:
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       #XXX run: cmake --build . --config $BUILD_TYPE
-      run: make build
+      run: make build -n
 
     - name: Test
       #XXX working-directory: ${{runner.workspace}}/build
