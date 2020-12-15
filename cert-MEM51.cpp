@@ -49,13 +49,13 @@ struct P
 
 class C
 {
-    P* p;
+    P* m_p;
 
 public:
-    C(P* p) : p(p) {}
-    ~C() { delete p; } // diagnostic required
+    C(P* p) : m_p(p) {}
+    ~C() { delete m_p; } // diagnostic required
 
-    void f() { std::cout << p->text << std::endl; }
+    void f() { std::cout << m_p->text << std::endl; }
 };
 
 void g(C c) { c.f(); }

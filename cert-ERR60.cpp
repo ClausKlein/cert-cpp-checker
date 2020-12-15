@@ -12,7 +12,7 @@ class S : public std::exception
     std::string m;
 
 public:
-    S(const char* msg) : m(msg) {}
+    explicit S(const char* msg) : m(msg) {}
 
     const char* what() const noexcept override { return m.c_str(); }
 };
