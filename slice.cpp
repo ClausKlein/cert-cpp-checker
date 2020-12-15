@@ -3,7 +3,7 @@
 
 class Employee
 {
-    std::string name;
+    std::string m_name;
 
 protected:
     virtual void print(std::ostream& os) const { os << "Employee: " << get_name() << std::endl; }
