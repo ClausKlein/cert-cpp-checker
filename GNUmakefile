@@ -1,18 +1,33 @@
 MAKEFLAGS+= --warn-undefined-variables
+
 COLOR?=
 VERBOSE?=
 MAKESILENT?=
+
+GMAKE:=$(shell which gmake)
+ifeq (NO$(GMAKE),NO)
+  GMAKE:=make
+else
+  GMAKE:=gmake
+endif
+
+NINJA:=$(shell which ninja)
+ifeq (NO$(NINJA),NO)
+  GENERATOR:=
+endif
+
+GENERATOR?=-G Ninja
 
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
 
 #XXX CC:=gcc-10
-CC?=clang
-CFLAGS:=-std=c11 -Wextra -Wpedantic
+CC:=clang
+CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
 
 #XXX CXX:=g++-10
-CXX?=clang++
-CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
+CXX:=clang++
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow
 
 LDLIBS:=$(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib
@@ -98,7 +113,7 @@ library.o: library.cpp
 	g++ -std=c++98 -c $< -o $@
 
 
-all: init $(PROGRAMS) #XXX test #NO! check
+all: library.a $(PROGRAMS) #XXX init test #NO! check
 	@echo ]
 
 init: library.a GNUmakefile compile_commands.json
@@ -115,13 +130,13 @@ init: library.a GNUmakefile compile_commands.json
 # 	clang-tidy $<
 
 check: init
-	$(SCAN_BUILD) --keep-going --use-c++ $(CXX) -o $(HTMLDIR) $(MAKE) -j4 -B all
+	$(SCAN_BUILD) --keep-going --use-c++ $(CXX) -o $(HTMLDIR) $(GMAKE) -j4 -B all
 
 compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
 
 $(BUILDDIR)/compile_commands.json: CMakeLists.txt
-	cmake -B $(@D) -S $(CURDIR) #XXX -G Ninja
+	cmake -B $(@D) -S $(CURDIR) $(GENERATOR)
 
 build: compile_commands.json
 	cmake --build $(BUILDDIR) -- all
@@ -133,10 +148,11 @@ format:
 	clang-format -i *.cpp *.c *.h #XXX *.hpp
 
 clean:
+	rm -f *.a *.o $(PROGRAMS)
 	-cmake --build $(BUILDDIR) -- $@
-	rm -rf .*~ *~ *.a *.o $(PROGRAMS)
 
-distclean: clean
+distclean: #XXX NO! clean
+	rm -f .*~ *~ *.a *.o $(PROGRAMS)
 	rm -rf $(BUILDDIR) $(HTMLDIR) compile_commands.json
 
 GNUmakefile :: ;
