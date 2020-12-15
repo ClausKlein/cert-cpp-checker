@@ -8,13 +8,16 @@
 
 namespace {
 
-void bad(const std::vector<int>& c)
+size_t bad(const std::vector<int>& c)
 {
     constexpr size_t maxSize = 20;
+    size_t count = 0;
     for (auto i = c.begin(), e = i + maxSize; i != e; ++i) {
         std::cout << *i << ", "; // diagnostic required
+        ++count;
     }
     std::cout << std::endl;
+    return count;
 }
 
 void good(const std::vector<int>& c)
@@ -39,7 +42,9 @@ void perfect(const std::vector<int>& c)
 int main()
 {
     std::vector<int> v{1, 2, 3, 4, 5, 6, 7};
-    bad(v);
+    size_t result = bad(v);
     good(v);
     perfect(v);
+
+    return static_cast<int>(result != v.size());
 }

@@ -15,11 +15,11 @@ TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
 
 #XXX CC:=gcc-10
-CC?=clang
+CC:=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
 
 #XXX CXX:=g++-10
-CXX?=clang++
+CXX:=clang++
 CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow
 
 LDLIBS:=$(CURDIR)/library.a
