@@ -4,9 +4,16 @@ COLOR?=
 VERBOSE?=
 MAKESILENT?=
 
+GMAKE:=$(shell which gmake)
+ifeq (NO$(GMAKE),NO)
+  GMAKE:=make
+else
+  GMAKE:=gmake
+endif
+
 NINJA:=$(shell which ninja)
 ifeq (NO$(NINJA),NO)
-GENERATOR:=
+  GENERATOR:=
 endif
 
 GENERATOR?=-G Ninja
@@ -123,7 +130,7 @@ init: library.a GNUmakefile compile_commands.json
 # 	clang-tidy $<
 
 check: init
-	$(SCAN_BUILD) --keep-going --use-c++ $(CXX) -o $(HTMLDIR) $(MAKE) -j4 -B all
+	$(SCAN_BUILD) --keep-going --use-c++ $(CXX) -o $(HTMLDIR) $(GMAKE) -j4 -B all
 
 compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
