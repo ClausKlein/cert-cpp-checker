@@ -7,20 +7,22 @@ env:
   BUILD_TYPE: Debug
 
 jobs:
-  job1:
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Add nina to Build Environment
-      run: sudo apt-get install ninja-build llvm
+  #XXX
+  # job1:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #   - name: Add nina to Build Environment
+  #     run: sudo apt-get install ninja-build llvm
 
-  job2:
-    runs-on: macos-latest
-    steps:
-    - name: Add nina to Build Environment
-      run: brew install ninja
+  #XXX
+  # job2:
+  #   runs-on: macos-latest
+  #   steps:
+  #   - name: Add nina to Build Environment
+  #     run: brew install ninja
 
   build:
-    needs: [job1, job2]
+    #XXX needs: [job1, job2]
 
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -36,9 +38,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # - name: Add nina to Build Environment
-    #   shell: bash
-    #   run: brew install ninja || sudo apt-get install ninja-build
+    - name: Add nina to Build Environment
+      shell: bash
+      run: test $OSTYPE != "darwin19" &&  sudo apt-get install ninja-build
 
     - name: Create Build Environment
       shell: bash
