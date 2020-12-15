@@ -17,7 +17,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Add nina to Build Environment
-      run: brew install ninja gmake
+      run: brew install ninja
 
   build:
     needs: [job1, job2]
