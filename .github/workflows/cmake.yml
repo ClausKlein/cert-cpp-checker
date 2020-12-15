@@ -13,10 +13,11 @@ jobs:
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     # and: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-    runs-on:
-    - ubuntu-20.04
-
-    - macos-latest
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-running-with-more-than-one-operating-system
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [macos-latest, ubuntu-18.04 ubuntu-20.04]
 
     steps:
     - uses: actions/checkout@v2
