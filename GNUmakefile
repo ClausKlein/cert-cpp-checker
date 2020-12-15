@@ -1,7 +1,15 @@
 MAKEFLAGS+= --warn-undefined-variables
+
 COLOR?=
 VERBOSE?=
 MAKESILENT?=
+
+NINJA:=$(shell which ninja)
+ifeq (NO$(NINJA),NO)
+GENERATOR:=
+endif
+
+GENERATOR?=-G Ninja
 
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
@@ -121,7 +129,7 @@ compile_commands.json: $(BUILDDIR)/compile_commands.json
 	ln -fs $< $@
 
 $(BUILDDIR)/compile_commands.json: CMakeLists.txt
-	cmake -B $(@D) -S $(CURDIR) -G Ninja
+	cmake -B $(@D) -S $(CURDIR) $(GENERATOR)
 
 build: compile_commands.json
 	cmake --build $(BUILDDIR) -- all
@@ -133,10 +141,11 @@ format:
 	clang-format -i *.cpp *.c *.h #XXX *.hpp
 
 clean:
+	rm -f *.a *.o $(PROGRAMS)
 	-cmake --build $(BUILDDIR) -- $@
-	rm -rf .*~ *~ *.a *.o $(PROGRAMS)
 
-distclean: clean
+distclean: #XXX NO! clean
+	rm -f .*~ *~ *.a *.o $(PROGRAMS)
 	rm -rf $(BUILDDIR) $(HTMLDIR) compile_commands.json
 
 GNUmakefile :: ;
