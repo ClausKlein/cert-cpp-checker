@@ -22,13 +22,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Add nina to Build Environment
+      shell: bash
+      run: brew install ninja || sudo apt-get install ninja-build
+
     - name: Create Build Environment
       shell: bash
       # Some projects don't allow in-source building, so create a separate build directory
       # We'll use this as our working directory for all subsequent commands
-      run:
-      - brew install ninja || sudo apt-get install ninja-build
-      - cmake -E make_directory ${{runner.workspace}}/build && make library.a
+      run: cmake -E make_directory ${{runner.workspace}}/build && make library.a
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
