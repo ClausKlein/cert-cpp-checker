@@ -40,7 +40,7 @@ jobs:
 
     - name: Add nina to Build Environment
       shell: bash
-      run: test $OSTYPE != "darwin19" &&  sudo apt-get install ninja-build
+      run: test $OSTYPE != "darwin19" && sudo apt-get install ninja-build || brew install ninja
 
     - name: Create Build Environment
       shell: bash
