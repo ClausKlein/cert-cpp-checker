@@ -9,8 +9,8 @@ protected:
     virtual void print(std::ostream& os) const { os << "Employee: " << get_name() << std::endl; }
 
 public:
-    Employee(const std::string& name) : name(name) {}
-    const std::string& get_name() const { return name; }
+    Employee(const std::string& name) : m_name(name) {}
+    const std::string& get_name() const { return m_name; }
     friend std::ostream& operator<<(std::ostream& os, const Employee& e)
     {
         e.print(os);
@@ -20,7 +20,7 @@ public:
 
 class Manager : public Employee
 {
-    Employee assistant;
+    Employee m_assistant;
 
 protected:
     void print(std::ostream& os) const override
@@ -30,9 +30,10 @@ protected:
     }
 
 public:
-    Manager(const std::string& name, const Employee& assistant) : Employee(name), assistant(assistant)
+    Manager(const std::string& name, const Employee& assistant)
+        : Employee(name), m_assistant(assistant)
     {}
-    const Employee& get_assistant() const { return assistant; }
+    const Employee& get_assistant() const { return m_assistant; }
 };
 
 /// OOP51-CPP. Do not slice derived objects

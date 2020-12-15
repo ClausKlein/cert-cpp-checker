@@ -16,11 +16,11 @@ CPPFLAGS?=-isystem /usr/local/include
 
 #XXX CC:=gcc-10
 CC?=clang
-CFLAGS:=-std=c11 -Wextra -Wpedantic
+CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
 
 #XXX CXX:=g++-10
 CXX?=clang++
-CXXFLAGS:=-std=c++17 -Wextra -Wpedantic
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow
 
 LDLIBS:=$(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib

@@ -30,7 +30,7 @@ void bar(const double* items, std::size_t count)
 {
     std::deque<double> d;
     std::transform(items, items + count, std::inserter(d, d.begin()),
-                   [](double d) { return d + 41.0; });
+                   [](double i) { return i + 41.0; });
 }
 
 } // namespace
