@@ -14,7 +14,7 @@ void foo(const std::string& input)
     // Copy input into email converting ";" to " "
     std::string::iterator loc = email.begin();
     for (auto i = input.begin(), e = input.end(); i != e; ++i, ++loc) {
-        /*loc =*/ email.insert(loc, *i != ';' ? *i : ' ');    // undefined behavior!
+        /*loc =*/email.insert(loc, *i != ';' ? *i : ' '); // undefined behavior!
     }
 }
 
@@ -26,7 +26,6 @@ void bad(std::string& exampleString)
     // ...
     puts(data); // undefined behavior!
 }
-
 
 void better(std::string& exampleString)
 {

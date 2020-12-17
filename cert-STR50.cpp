@@ -20,8 +20,8 @@ void bar(std::istream& in)
     char bufOne[SIZE];
     char bufTwo[SIZE];
     in.width(SIZE); // NOTE: should be (SIZE-1)! CK
-    in >> bufOne; // diagnositc required
-    in >> bufTwo; // diagnositc required
+    in >> bufOne;   // diagnositc required
+    in >> bufTwo;   // diagnositc required
 }
 
 void bad(std::istream& in)
