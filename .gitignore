@@ -26,6 +26,10 @@ cert-MEM54
 cert-MEM55
 cert-MEM56
 cert-MEM57
+cert-STR50
+cert-STR51
+cert-STR52
+cert-STR53
 compile_commands.json
 dynamic_pointer_cast
 safeComparison
