@@ -47,7 +47,7 @@ foreach(TEST_SOURCE ${TESTS})
 endforeach()
 
 
-find_package(CEREAL CONFIG)
+# TODO find_package(CEREAL CONFIG)
 if(CEREAL_FOUND)
     add_executable(cereal-test cereal-test.cpp)
     target_link_libraries(cereal-test cereal::cereal)

@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false  # Keep running other jobs even if one fails
       matrix:
-        # llvm_version: [11, 12]
+        # TODO: llvm_version: [10, 11, 12]
         os: [macos-latest, ubuntu-20.04]
 
     steps:
@@ -48,7 +48,8 @@ jobs:
           sudo apt-get update
 
           sudo apt-get install \
-            llvm-11 clang-11 libclang-11-dev clang-tidy-11
+            llvm-10 clang-10 libclang-10-dev clang-tidy-10 ||
+              echo IGNORED
 
           sudo apt-get install \
             fmt \
