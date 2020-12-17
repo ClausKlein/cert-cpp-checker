@@ -1,3 +1,4 @@
+---
 name: CMake
 
 on: [push]
@@ -5,16 +6,18 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
+  CXX: clang++
+  CC: clang
 
 jobs:
-  #XXX
+  # XXX
   # job1:
   #   runs-on: ubuntu-20.04
   #   steps:
   #   - name: Add nina to Build Environment
   #     run: sudo apt-get install ninja-build llvm
 
-  #XXX
+  # XXX
   # job2:
   #   runs-on: macos-latest
   #   steps:
@@ -22,56 +25,92 @@ jobs:
   #     run: brew install ninja
 
   build:
-    #XXX needs: [job1, job2]
+    # XXX needs: [job1, job2]
 
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    # and: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#example-running-with-more-than-one-operating-system
+    # The CMake configure and build commands are platform agnostic and
+    # should work equally well on Windows or Mac.  You can convert this
+    # to a matrix build if you need cross-platform coverage.
     runs-on: ${{ matrix.os }}
+
     strategy:
-        matrix:
-            os: [macos-latest, ubuntu-20.04]
+      fail-fast: false  # Keep running other jobs even if one fails
+      matrix:
+        # llvm_version: [11, 12]
+        os: [macos-latest, ubuntu-20.04]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Add nina to Build Environment
-      shell: bash
-      run: test $OSTYPE != "darwin19" && sudo apt-get install ninja-build || brew install ninja
+      - name: Configure Ubuntu Host
+        if: startsWith(matrix.host_os, 'ubuntu')
+        shell: bash
+        run: |
+          sudo apt-get update
 
-    - name: Create Build Environment
-      shell: bash
-      # Some projects don't allow in-source building, so create a separate build directory
-      # We'll use this as our working directory for all subsequent commands
-      run: cmake -E make_directory ${{runner.workspace}}/build && make library.a
+          sudo apt-get install \
+            llvm-11 clang-11 libclang-11-dev clang-tidy-11
 
-    - name: Configure CMake
-      # Use a bash shell so we can use the same syntax for environment variable
-      # access regardless of the host operating system
-      shell: bash
-      working-directory: ${{runner.workspace}}/build
-      # Note the current convention is to use the -S and -B options here to specify source
-      # and build directories, but this is only available with CMake 3.13 and higher.
-      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -G Ninja
+          sudo apt-get install \
+            fmt \
+            cereal \
+            doctest \
+            ninja-build
 
-    - name: Build
-      working-directory: ${{runner.workspace}}/build
-      shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE
+      - name: Configure MacOS Host
+        if: startsWith(matrix.host_os, 'macos')
+        shell: bash
+        run: |
+          # coreutils is for gtimeout
+          # make is for gmake
+          brew install \
+            coreutils \
+            doctest \
+            cereal \
+            ninja \
+            make \
+            fmt
 
-    - name: Test
-      working-directory: ${{runner.workspace}}/build
-      shell: bash
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C $BUILD_TYPE || echo IGNORED
+      # - name: Add nina to Build Environment
+      #   shell: bash
+      #   run: |
+      #     test $OSTYPE != "darwin19" &&
+      #     sudo apt-get install ninja-build || brew install ninja
 
-    - name: Clang Analyser Checks
-      shell: bash
-      run: make all check || echo IGNORED
+      - name: Create Build Environment
+        shell: bash
+        # Some projects don't allow in-source building, so create a
+        # separate build directory We'll use this as our working
+        # directory for all subsequent commands
+        run: |
+          cmake -E make_directory ${{runner.workspace}}/build &&
+          make library.a
 
+          pip install builddriver
+
+      - name: Configure CMake
+        # Use a bash shell so we can use the same syntax for environment
+        # variable access regardless of the host operating system
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -G Ninja
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        # Execute the build.
+        run: cmake --build . --config $BUILD_TYPE --target all
+
+      - name: Test
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        # Execute tests defined by the CMake configuration.
+        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html
+        run: ctest -C $BUILD_TYPE || echo IGNORED
+
+      - name: Clang Analyser Checks
+        shell: bash
+        run: make all check || echo IGNORED
+
+      - name: Run clang-tidy
+        run: |
+          builddriver run-clang-tidy || echo IGNORED

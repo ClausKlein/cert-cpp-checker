@@ -59,6 +59,9 @@ target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
 add_executable(slice slice.cpp)
 target_compile_features(slice PRIVATE cxx_std_17)
 
+add_executable(lookAndSay lookAndSay.cpp)
+target_compile_features(lookAndSay PRIVATE cxx_std_17)
+
 find_package(SPAN CONFIG)
 if(SPAN_FOUND)
     add_executable(slide slide.cpp)
