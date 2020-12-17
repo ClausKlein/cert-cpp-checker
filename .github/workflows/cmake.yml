@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure Ubuntu Host
-        if: startsWith(matrix.host_os, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
           sudo apt-get update
@@ -57,7 +57,7 @@ jobs:
             ninja-build
 
       - name: Configure MacOS Host
-        if: startsWith(matrix.host_os, 'macos')
+        if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
           # coreutils is for gtimeout
