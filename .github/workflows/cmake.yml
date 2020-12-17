@@ -51,8 +51,8 @@ jobs:
             llvm-10 clang-10 libclang-10-dev clang-tidy-10 ||
               echo IGNORED
 
+          # TODO fmt is not available
           sudo apt-get install \
-            fmt \
             cereal \
             doctest \
             ninja-build
