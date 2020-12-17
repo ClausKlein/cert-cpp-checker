@@ -87,6 +87,7 @@ jobs:
           make library.a
 
           pip install builddriver
+          ln -s /Library/Frameworks/Python.framework/Versions/2.7/bin/builddriver .
 
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment
@@ -114,4 +115,5 @@ jobs:
 
       - name: Run clang-tidy
         run: |
-          builddriver run-clang-tidy || echo IGNORED
+          /home/runner/.local/bin/buidldriver run-clang-tidy ||
+          ./builddriver run-clang-tidy || echo IGNORED
