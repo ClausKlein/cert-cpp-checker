@@ -120,5 +120,5 @@ jobs:
       - name: Run clang-tidy
         run: |
           /home/runner/.local/bin/builddriver run-clang-tidy-10 ||
-          ./builddriver /usr/local/opt/llvm/bin/run-clang-tidy ||
-          echo IGNORED
+          builddriver /usr/local/opt/llvm/bin/run-clang-tidy ||
+          which builddriver || echo IGNORED
