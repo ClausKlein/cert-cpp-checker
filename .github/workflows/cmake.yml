@@ -69,7 +69,8 @@ jobs:
             cereal \
             ninja \
             make \
-            fmt
+            fmt \
+            python
 
       # - name: Add nina to Build Environment
       #   shell: bash
@@ -86,8 +87,8 @@ jobs:
           cmake -E make_directory ${{runner.workspace}}/build &&
           make library.a
 
-          pip install builddriver
-          ln -s /Library/Frameworks/Python.framework/Versions/2.7/bin/builddriver .
+          pip3 install builddriver
+          ln -s /Library/Frameworks/Python.framework/Versions/3.9/bin/builddriver .
 
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment
