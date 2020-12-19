@@ -53,6 +53,7 @@ jobs:
 
           # TODO fmt is not available!
           sudo apt-get install \
+            boost \
             cereal \
             ninja-build
 
@@ -65,6 +66,7 @@ jobs:
           brew install \
             coreutils \
             cereal \
+            boost \
             ninja \
             make \
             fmt \
