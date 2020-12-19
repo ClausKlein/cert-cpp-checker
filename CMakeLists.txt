@@ -58,7 +58,7 @@ include(FetchContent)
 # ============================================================
 
 find_package(CEREAL CONFIG)
-if(NOT TARGET cereal::cereal)
+if(NOT CEREAL_CONFIG)
     # NOTE: many clang-tidy warnings! CK
     message(WARNING "Try to build cereal with FetchContent ...")
     fetchcontent_declare(
