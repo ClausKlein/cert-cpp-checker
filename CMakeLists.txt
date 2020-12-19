@@ -57,6 +57,7 @@ if(NOT TARGET cereal::cereal)
    fetchcontent_declare(
        cereal
        GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
+       GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
    )
    fetchcontent_makeavailable(cereal)
 endif()
@@ -78,6 +79,7 @@ if(NOT TARGET tcb::span)
    fetchcontent_declare(
        span
        GIT_REPOSITORY https://github.com/ClausKlein/span.git
+       GIT_TAG        9b73e7e1676248da835d34e6eea6fccc7eb41464
    )
    fetchcontent_makeavailable(span)
 endif()
