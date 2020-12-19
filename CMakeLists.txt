@@ -56,7 +56,7 @@ if(NOT TARGET cereal::cereal)
    message(WARNING "Try to get cereal with FetchContent ...")
    fetchcontent_declare(
        cereal
-       GIT_REPOSITORY git@github.com:ClausKlein/cereal.git
+       GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
    )
    fetchcontent_makeavailable(cereal)
 endif()
@@ -66,7 +66,8 @@ if(NOT TARGET fmt::fmt)
    message(WARNING "Try to get fmt with FetchContent ...")
    fetchcontent_declare(
        fmt
-       GIT_REPOSITORY git@github.com:ClausKlein/fmt.git
+       GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+       GIT_TAG        7.1.3
    )
    fetchcontent_makeavailable(fmt)
 endif()
@@ -76,7 +77,7 @@ if(NOT TARGET tcb::span)
    message(WARNING "Try to get span with FetchContent ...")
    fetchcontent_declare(
        span
-       GIT_REPOSITORY git@github.com:ClausKlein/span.git
+       GIT_REPOSITORY https://github.com/ClausKlein/span.git
    )
    fetchcontent_makeavailable(span)
 endif()

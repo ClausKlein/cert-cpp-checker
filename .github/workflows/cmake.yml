@@ -70,12 +70,6 @@ jobs:
             fmt \
             python
 
-      # - name: Add nina to Build Environment
-      #   shell: bash
-      #   run: |
-      #     test $OSTYPE != "darwin19" &&
-      #     sudo apt-get install ninja-build || brew install ninja
-
       - name: Create Build Environment
         shell: bash
         # Some projects don't allow in-source building, so create a
@@ -114,9 +108,17 @@ jobs:
         shell: bash
         run: make all check || echo IGNORED
 
-      - name: Run clang-tidy
+      - name: Run clang-tidy on MacOS Host
+        if: startsWith(matrix.os, 'macos')
+        shell: bash
         run: |
           export PATH=/usr/local/opt/llvm/bin/;${PATH}
-          /home/runner/.local/bin/builddriver run-clang-tidy-10 ||
           builddriver /usr/local/opt/llvm/share/clang/run-clang-tidy.py ||
+          echo IGNORED
+
+      - name: Run clang-tidy on Ubuntu Host
+        if: startsWith(matrix.os, 'ubuntu')
+        shell: bash
+        run: |
+          /home/runner/.local/bin/builddriver run-clang-tidy-10 ||
           echo IGNORED
