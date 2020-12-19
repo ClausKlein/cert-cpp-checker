@@ -19,13 +19,19 @@ if(WITH_WERROR)
     add_compile_options(-Werror)
 endif()
 
+option(ENABLE_CLANG_TIDY "Run clang-tidy automatically as prebuild step" OFF)
 find_program(CLANG_TIDY
-    NAMES clang-tidy clang-tidy-7 clang-tidy-8 clang-tidy-9 clang-tidy-10 clang-tidy-11 clang-tidy-12
+    NAMES clang-tidy clang-tidy-7 clang-tidy-8 clang-tidy-9
+        clang-tidy-10 clang-tidy-11 clang-tidy-12
     HINTS /usr/local/opt/llvm/bin/ /usr/local/bin /usr/bin
 )
 if(CLANG_TIDY)
-    message(STATUS "set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})")
-    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})
+    if(ENABLE_CLANG_TIDY)
+        message(STATUS "set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})")
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_CMD} CACHE STRING "forced!" FORCE)
+    else()
+        set(CMAKE_CXX_CLANG_TIDY "" CACHE STRING "forced!" FORCE) # delete it
+    endif()
 endif()
 
 #----------------------------------------------------------
@@ -51,38 +57,38 @@ endforeach()
 include(FetchContent)
 # ============================================================
 
+find_package(CEREAL CONFIG)
 # XXX to many clang-tidy warnings! CK
-# find_package(CEREAL CONFIG)
 # if(NOT TARGET cereal::cereal)
-#    message(WARNING "Try to get cereal with FetchContent ...")
-#    fetchcontent_declare(
-#        cereal
-#        GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
-#        GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
-#    )
-#    fetchcontent_makeavailable(cereal)
+#     message(STATUS "Try to get cereal with FetchContent ...")
+#     fetchcontent_declare(
+#         cereal
+#         GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
+#         GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
+#     )
+#     fetchcontent_makeavailable(cereal)
 # endif()
 
 find_package(FMT CONFIG)
 if(NOT TARGET fmt::fmt)
-   message(WARNING "Try to get fmt with FetchContent ...")
-   fetchcontent_declare(
-       fmt
-       GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-       GIT_TAG        7.1.3
-   )
-   fetchcontent_makeavailable(fmt)
+    message(STATUS "Try to get fmt with FetchContent ...")
+    fetchcontent_declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG        7.1.3
+    )
+    fetchcontent_makeavailable(fmt)
 endif()
 
 find_package(SPAN CONFIG)
 if(NOT TARGET tcb::span)
-   message(WARNING "Try to get span with FetchContent ...")
-   fetchcontent_declare(
-       span
-       GIT_REPOSITORY https://github.com/ClausKlein/span.git
-       GIT_TAG        9b73e7e1676248da835d34e6eea6fccc7eb41464
-   )
-   fetchcontent_makeavailable(span)
+    message(STATUS "Try to get span with FetchContent ...")
+    fetchcontent_declare(
+        span
+        GIT_REPOSITORY https://github.com/ClausKlein/span.git
+        GIT_TAG        9b73e7e1676248da835d34e6eea6fccc7eb41464
+    )
+    fetchcontent_makeavailable(span)
 endif()
 
 find_package(Boost CONFIG)
@@ -90,15 +96,17 @@ find_package(Boost CONFIG)
 # ============================================================
 #
 
-if(TARGET Boost::headers)
+
+if(TARGET Boost::headers AND TARGET fmt::fmt)
     add_executable(to_string to_string.cpp)
     target_link_libraries(to_string fmt::fmt Boost::headers)
 endif()
 
 
-# TODO: later ...
-# add_executable(cereal-test cereal-test.cpp)
-# target_link_libraries(cereal-test cereal::cereal)
+if(TARGET cereal::cereal)
+    add_executable(cereal-test cereal-test.cpp)
+    target_link_libraries(cereal-test cereal::cereal)
+endif()
 
 add_executable(dynamic_pointer_cast dynamic_pointer_cast.cpp)
 target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
@@ -119,7 +127,7 @@ if(NOT CMAKE_CXX_STANDARD STREQUAL 17)
 
     add_executable(timeConversion timeConversion.cpp)
     target_compile_features(timeConversion PRIVATE cxx_std_20)
-else()
+elseif(TARGET tcb::span)
     add_executable(slide slide.cpp)
     target_link_libraries(slide tcb::span)
 endif()

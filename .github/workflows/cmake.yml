@@ -116,13 +116,13 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
-          export PATH=/usr/local/opt/llvm/bin/;${PATH}
-          builddriver /usr/local/opt/llvm/share/clang/run-clang-tidy.py ||
+          export PATH=/usr/local/opt/llvm/bin/:${PATH}
+          builddriver /usr/local/opt/llvm/share/clang/run-clang-tidy.py *.cpp ||
           echo IGNORED
 
       - name: Run clang-tidy on Ubuntu Host
         if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
-          /home/runner/.local/bin/builddriver run-clang-tidy-10 ||
+          /home/runner/.local/bin/builddriver run-clang-tidy-10 *.cpp ||
           echo IGNORED
