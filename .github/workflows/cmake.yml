@@ -51,10 +51,9 @@ jobs:
             llvm-10 clang-10 libclang-10-dev clang-tidy-10 ||
               echo IGNORED
 
-          # TODO fmt is not available
+          # TODO fmt is not available!
           sudo apt-get install \
             cereal \
-            doctest \
             ninja-build
 
       - name: Configure MacOS Host
@@ -65,7 +64,6 @@ jobs:
           # make is for gmake
           brew install \
             coreutils \
-            doctest \
             cereal \
             ninja \
             make \
@@ -118,6 +116,7 @@ jobs:
 
       - name: Run clang-tidy
         run: |
+          export PATH=/usr/local/opt/llvm/bin/;${PATH}
           /home/runner/.local/bin/builddriver run-clang-tidy-10 ||
-          /usr/local/opt/llvm/share/clang/run-clang-tidy.py ||
-          which builddriver || echo IGNORED
+          builddriver /usr/local/opt/llvm/share/clang/run-clang-tidy.py ||
+          echo IGNORED

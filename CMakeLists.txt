@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.8...3.15)
+cmake_minimum_required(VERSION 3.15...3.19)
 
 option(CMAKE_EXPORT_COMPILE_COMMANDS "create compile_commands.json" ON)
 
-project(cert-test LANGUAGES CXX VERSION 0.1.4)
+project(cert-test LANGUAGES CXX VERSION 0.1.7)
 
 #----------------------------------------------------------
 # Compiler config
@@ -47,11 +47,53 @@ foreach(TEST_SOURCE ${TESTS})
 endforeach()
 
 
-# TODO find_package(CEREAL CONFIG)
-if(CEREAL_FOUND)
-    add_executable(cereal-test cereal-test.cpp)
-    target_link_libraries(cereal-test cereal::cereal)
+# ===================  build dependencies  ===================
+include(FetchContent)
+# ============================================================
+
+find_package(CEREAL CONFIG)
+if(NOT TARGET cereal::cereal)
+   message(WARNING "Try to get cereal with FetchContent ...")
+   fetchcontent_declare(
+       cereal
+       GIT_REPOSITORY git@github.com:ClausKlein/cereal.git
+   )
+   fetchcontent_makeavailable(cereal)
 endif()
+
+find_package(FMT CONFIG)
+if(NOT TARGET fmt::fmt)
+   message(WARNING "Try to get fmt with FetchContent ...")
+   fetchcontent_declare(
+       fmt
+       GIT_REPOSITORY git@github.com:ClausKlein/fmt.git
+   )
+   fetchcontent_makeavailable(fmt)
+endif()
+
+find_package(SPAN CONFIG)
+if(NOT TARGET tcb::span)
+   message(WARNING "Try to get span with FetchContent ...")
+   fetchcontent_declare(
+       span
+       GIT_REPOSITORY git@github.com:ClausKlein/span.git
+   )
+   fetchcontent_makeavailable(span)
+endif()
+
+find_package(Boost CONFIG)
+#
+# ============================================================
+#
+
+if(TARGET Boost::headers)
+    add_executable(to_string to_string.cpp)
+    target_link_libraries(to_string fmt::fmt Boost::headers)
+endif()
+
+
+add_executable(cereal-test cereal-test.cpp)
+target_link_libraries(cereal-test cereal::cereal)
 
 add_executable(dynamic_pointer_cast dynamic_pointer_cast.cpp)
 target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
@@ -62,25 +104,18 @@ target_compile_features(slice PRIVATE cxx_std_17)
 add_executable(lookAndSay lookAndSay.cpp)
 target_compile_features(lookAndSay PRIVATE cxx_std_17)
 
-find_package(SPAN CONFIG)
-if(SPAN_FOUND)
+
+if(NOT CMAKE_CXX_STANDARD STREQUAL 17)
+    add_executable(slide slide.cpp)
+    target_compile_features(slide PRIVATE cxx_std_20)
+
+    add_executable(safeComparison safeComparison.cpp)
+    target_compile_features(safeComparison PRIVATE cxx_std_20)
+
+    add_executable(timeConversion timeConversion.cpp)
+    target_compile_features(timeConversion PRIVATE cxx_std_20)
+else()
     add_executable(slide slide.cpp)
     target_link_libraries(slide tcb::span)
-else()
-    #XXX add_executable(slide slide.cpp)
-    #XXX target_compile_features(slide PRIVATE cxx_std_20)
-endif()
-
-add_executable(safeComparison safeComparison.cpp)
-#XXX target_compile_features(safeComparison PRIVATE cxx_std_20)
-
-add_executable(timeConversion timeConversion.cpp)
-#XXX target_compile_features(timeConversion PRIVATE cxx_std_20)
-
-find_package(Boost CONFIG)
-find_package(FMT CONFIG)
-if(FMT_FOUND AND Boost_fOUND)
-    add_executable(to_string to_string.cpp)
-    target_link_libraries(to_string fmt::fmt Boost::headers)
 endif()
 
