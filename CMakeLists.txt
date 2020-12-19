@@ -58,20 +58,20 @@ include(FetchContent)
 # ============================================================
 
 find_package(CEREAL CONFIG)
-# XXX to many clang-tidy warnings! CK
-# if(NOT TARGET cereal::cereal)
-#     message(STATUS "Try to get cereal with FetchContent ...")
-#     fetchcontent_declare(
-#         cereal
-#         GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
-#         GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
-#     )
-#     fetchcontent_makeavailable(cereal)
-# endif()
+if(NOT TARGET cereal::cereal)
+    # NOTE: many clang-tidy warnings! CK
+    message(WARNING "Try to build cereal with FetchContent ...")
+    fetchcontent_declare(
+        cereal
+        GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
+        GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
+    )
+    fetchcontent_makeavailable(cereal)
+endif()
 
 find_package(FMT CONFIG)
 if(NOT TARGET fmt::fmt)
-    message(STATUS "Try to get fmt with FetchContent ...")
+    message(STATUS "Try to build fmt with FetchContent ...")
     fetchcontent_declare(
         fmt
         GIT_REPOSITORY https://github.com/fmtlib/fmt.git
@@ -82,7 +82,7 @@ endif()
 
 find_package(SPAN CONFIG)
 if(NOT TARGET tcb::span)
-    message(STATUS "Try to get span with FetchContent ...")
+    message(STATUS "Try to build span with FetchContent ...")
     fetchcontent_declare(
         span
         GIT_REPOSITORY https://github.com/ClausKlein/span.git
