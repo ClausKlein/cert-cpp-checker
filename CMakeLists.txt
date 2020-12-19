@@ -51,16 +51,17 @@ endforeach()
 include(FetchContent)
 # ============================================================
 
-find_package(CEREAL CONFIG)
-if(NOT TARGET cereal::cereal)
-   message(WARNING "Try to get cereal with FetchContent ...")
-   fetchcontent_declare(
-       cereal
-       GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
-       GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
-   )
-   fetchcontent_makeavailable(cereal)
-endif()
+# XXX to many clang-tidy warnings! CK
+# find_package(CEREAL CONFIG)
+# if(NOT TARGET cereal::cereal)
+#    message(WARNING "Try to get cereal with FetchContent ...")
+#    fetchcontent_declare(
+#        cereal
+#        GIT_REPOSITORY https://github.com/ClausKlein/cereal.git
+#        GIT_TAG        85ba6a7d8a05e73123a429d85bfeac000887932f
+#    )
+#    fetchcontent_makeavailable(cereal)
+# endif()
 
 find_package(FMT CONFIG)
 if(NOT TARGET fmt::fmt)
@@ -95,8 +96,9 @@ if(TARGET Boost::headers)
 endif()
 
 
-add_executable(cereal-test cereal-test.cpp)
-target_link_libraries(cereal-test cereal::cereal)
+# TODO: later ...
+# add_executable(cereal-test cereal-test.cpp)
+# target_link_libraries(cereal-test cereal::cereal)
 
 add_executable(dynamic_pointer_cast dynamic_pointer_cast.cpp)
 target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
