@@ -53,7 +53,8 @@ jobs:
 
           # TODO fmt is not available!
           sudo apt-get install \
-            boost \
+            libboost-all-dev \
+            doctest \
             cereal \
             ninja-build
 
@@ -65,6 +66,7 @@ jobs:
           # make is for gmake
           brew install \
             coreutils \
+            doctest \
             cereal \
             boost \
             ninja \
