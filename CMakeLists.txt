@@ -98,8 +98,9 @@ find_package(Boost CONFIG)
 
 
 if(TARGET Boost::headers AND TARGET fmt::fmt)
-    add_executable(to_string to_string.cpp)
-    target_link_libraries(to_string fmt::fmt Boost::headers)
+    #FIXME! CK
+    #XXX add_executable(to_string to_string.cpp)
+    #XXX target_link_libraries(to_string fmt::fmt Boost::headers)
 endif()
 
 
