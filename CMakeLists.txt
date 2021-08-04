@@ -115,6 +115,10 @@ target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
 add_executable(slice slice.cpp)
 target_compile_features(slice PRIVATE cxx_std_17)
 
+add_executable(strcat_s strcat_s.cpp)
+target_compile_features(strcat_s PRIVATE cxx_std_17)
+add_test(NAME strcat_s COMMAND strcat_s)
+
 add_executable(lookAndSay lookAndSay.cpp)
 target_compile_features(lookAndSay PRIVATE cxx_std_17)
 
