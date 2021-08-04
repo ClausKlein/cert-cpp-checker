@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.15...3.19)
+cmake_minimum_required(VERSION 3.14...3.21)
 
 option(CMAKE_EXPORT_COMPILE_COMMANDS "create compile_commands.json" ON)
 
-project(cert-test LANGUAGES CXX VERSION 0.1.8)
+project(cert-test LANGUAGES CXX VERSION 0.1.9)
 
 #----------------------------------------------------------
 # Compiler config
@@ -28,7 +28,7 @@ find_program(CLANG_TIDY
 if(CLANG_TIDY)
     if(ENABLE_CLANG_TIDY)
         message(STATUS "set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})")
-        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_CMD} CACHE STRING "forced!" FORCE)
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY} CACHE STRING "forced!" FORCE)
     else()
         set(CMAKE_CXX_CLANG_TIDY "" CACHE STRING "forced!" FORCE) # delete it
     endif()
@@ -98,8 +98,9 @@ find_package(Boost CONFIG)
 
 
 if(TARGET Boost::headers AND TARGET fmt::fmt)
-    add_executable(to_string to_string.cpp)
-    target_link_libraries(to_string fmt::fmt Boost::headers)
+    #FIXME! CK
+    #XXX add_executable(to_string to_string.cpp)
+    #XXX target_link_libraries(to_string fmt::fmt Boost::headers)
 endif()
 
 
@@ -113,6 +114,10 @@ target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
 
 add_executable(slice slice.cpp)
 target_compile_features(slice PRIVATE cxx_std_17)
+
+add_executable(strcat_s strcat_s.cpp)
+target_compile_features(strcat_s PRIVATE cxx_std_17)
+add_test(NAME strcat_s COMMAND strcat_s)
 
 add_executable(lookAndSay lookAndSay.cpp)
 target_compile_features(lookAndSay PRIVATE cxx_std_17)

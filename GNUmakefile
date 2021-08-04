@@ -21,13 +21,13 @@ GENERATOR?=-G Ninja
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
 
-#XXX CC:=gcc-10
+#XXX CC:=gcc-11
 CC:=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
 
-#XXX CXX:=g++-10
+#XXX CXX:=g++-11
 CXX:=clang++
-CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow -Warray-bounds
 
 LDLIBS:=$(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib
@@ -49,7 +49,7 @@ endif
 
 
 #
-# from https://wiki.sei.cmu.edu/confluence/display/cplusplus/Clang
+#XXX # from https://wiki.sei.cmu.edu/confluence/display/cplusplus/Clang
 #
 #XXX CXXFLAGS+=-analyzer-checker=cplusplus    # EXP51-CPP. Do not delete an array through a pointer of the incorrect type
 
@@ -89,7 +89,8 @@ export CC
 .PHONY: init all build check test format clean distclean
 
 TESTS:=$(wildcard cert-*.cpp)
-#XXX TESTS+=cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
+#XXX TESTS+= strcat.cpp
+#XXX TESTS+= cereal-test.cpp dynamic_pointer_cast.cpp safeComparison.cpp slice.cpp slide.cpp timeConversion.cpp to_string.cpp
 PROGRAMS:=$(TESTS:%.cpp=%)
 
 ######################################
