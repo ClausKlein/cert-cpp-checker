@@ -21,13 +21,13 @@ GENERATOR?=-G Ninja
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
 
-#XXX CC:=gcc-10
+#XXX CC:=gcc-11
 CC:=clang
 CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
 
 #XXX CXX:=g++-11
 CXX:=clang++
-CXXFLAGS:=-std=c++20 -Wextra -Wpedantic -Wshadow -Warray-bounds
+CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow -Warray-bounds
 
 LDLIBS:=$(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib

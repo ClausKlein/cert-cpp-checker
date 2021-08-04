@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.15...3.19)
+cmake_minimum_required(VERSION 3.14...3.21)
 
 option(CMAKE_EXPORT_COMPILE_COMMANDS "create compile_commands.json" ON)
 
-project(cert-test LANGUAGES CXX VERSION 0.1.8)
+project(cert-test LANGUAGES CXX VERSION 0.1.9)
 
 #----------------------------------------------------------
 # Compiler config
