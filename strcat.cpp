@@ -26,7 +26,7 @@ const char *file = "snmpd.conf";
 
 namespace {
 
-#if !defined __APPLE__ && !defined __BSD__
+#if !(defined(__APPLE__) || defined(__BSD__))
 // If the return value is >= dstsize, the output string has been
 // truncated.  It is the caller's responsibility to handle this
 size_t strlcpy(char* dst, const char* src, size_t len)

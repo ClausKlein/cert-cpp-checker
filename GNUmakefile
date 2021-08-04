@@ -27,7 +27,7 @@ CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
 
 #XXX CXX:=g++-11
 CXX:=clang++
-CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow
+CXXFLAGS:=-std=c++20 -Wextra -Wpedantic -Wshadow -Warray-bounds
 
 LDLIBS:=$(CURDIR)/library.a
 LDFLAGS:=-L/usr/local/lib
