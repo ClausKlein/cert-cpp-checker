@@ -10,7 +10,7 @@
 
 namespace {
 
-class MutablePredicate : public std::unary_function<int, bool>
+class MutablePredicate : public std::__unary_function<int, bool>
 {
     size_t timesCalled;
 

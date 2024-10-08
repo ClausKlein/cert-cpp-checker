@@ -32,9 +32,11 @@ cert-STR52
 cert-STR53
 compile_commands.json
 dynamic_pointer_cast
+lookAndSay
 safeComparison
 slice
 slide
+strcat
+strcat_s
 timeConversion
 to_string
-lookAndSay
