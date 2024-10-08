@@ -1,14 +1,14 @@
-cmake_minimum_required(VERSION 3.14...3.21)
+cmake_minimum_required(VERSION 3.14...3.30)
 
 option(CMAKE_EXPORT_COMPILE_COMMANDS "create compile_commands.json" ON)
 
-project(cert-test LANGUAGES CXX VERSION 0.1.9)
+project(cert-test LANGUAGES CXX C VERSION 0.1.9)
 
 #----------------------------------------------------------
 # Compiler config
 #----------------------------------------------------------
 if(NOT DEFINED CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD 20)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
   set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
@@ -34,6 +34,10 @@ if(CLANG_TIDY)
     endif()
 endif()
 
+add_library(rary STATIC library.cpp library.h)
+target_include_directories(rary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_features(rary PRIVATE cxx_std_98)
+
 #----------------------------------------------------------
 enable_testing()
 #----------------------------------------------------------
@@ -47,7 +51,7 @@ foreach(TEST_SOURCE ${TESTS})
 
     add_executable(${TEST_TARGET} ${TEST_SOURCE})
     target_compile_features(${TEST_TARGET} PRIVATE cxx_std_17)
-    target_link_libraries(${TEST_TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/library.a)
+    target_link_libraries(${TEST_TARGET} PRIVATE rary)
     add_test(NAME "${TEST_TARGET}" COMMAND "${TEST_TARGET}")
 
 endforeach()
@@ -115,7 +119,7 @@ target_compile_features(dynamic_pointer_cast PRIVATE cxx_std_17)
 add_executable(slice slice.cpp)
 target_compile_features(slice PRIVATE cxx_std_17)
 
-add_executable(strcat_s strcat_s.cpp)
+add_executable(strcat_s strcat_s.c)
 target_compile_features(strcat_s PRIVATE cxx_std_17)
 add_test(NAME strcat_s COMMAND strcat_s)
 

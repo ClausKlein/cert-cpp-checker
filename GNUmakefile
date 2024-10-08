@@ -21,11 +21,11 @@ GENERATOR?=-G Ninja
 TARGET_ARCH:=
 CPPFLAGS?=-isystem /usr/local/include
 
-#XXX CC:=gcc-11
+#XXX CC:=gcc-14
 CC:=clang
-CFLAGS:=-std=c11 -Wextra -Wpedantic -Wshadow
+CFLAGS:=-std=c17 -Wextra -Wpedantic -Wshadow
 
-#XXX CXX:=g++-11
+#XXX CXX:=g++-14
 CXX:=clang++
 CXXFLAGS:=-std=c++17 -Wextra -Wpedantic -Wshadow -Warray-bounds
 
@@ -41,7 +41,7 @@ BUILDDIR?=$(CURDIR)/build
 UNAME:=$(shell uname)
 ifeq ($(UNAME),Darwin)
   SCAN_BUILD?=/usr/local/opt/llvm/bin/scan-build
-  #XXX CPPFLAGS+=-isystem /usr/local/Cellar/llvm/11.0.0/include/c++/v1/
+  #XXX CPPFLAGS+=-isystem /usr/local/Cellar/llvm/19.1.0/include/c++/v1/
 else
   CLANG_VERSION:=$(shell clang --version | grep -w version | perl -n -e 'print if s/^.*clang version (\d+)\..*/$$1/')
   SCAN_BUILD:=$(shell which scan-build-$(CLANG_VERSION) || which scan-build)

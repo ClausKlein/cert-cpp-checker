@@ -1,10 +1,9 @@
 #define __STDC_WANT_LIB_EXT1__ 1
-#include <cassert>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-namespace {
 
 #if !(defined(__APPLE__) || defined(__BSD__))
 // Like snprintf(3), the strlcpy() and strlcat() functions return the
@@ -38,13 +37,11 @@ size_t strlcat(char* dst, const char* src, size_t capacity)
 }
 #endif
 
-} // namespace
-
 int main(void)
 {
     char dst[15 + 2 * 6 + 1] = "Hello ";
     char src[6 + 1] = "World!";
-    constexpr size_t capacity = sizeof(dst); // NOTE: 28
+    const size_t capacity = sizeof(dst); // NOTE: 28
 
     size_t total_len = strlcat(dst, src, capacity);
     total_len = strlcat(dst, " .............#", capacity);
